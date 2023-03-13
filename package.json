@@ -4,7 +4,11 @@
   "description": "Create awesome Github stat card",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm run dev",
+    "dev": "tsc -p tsconfig.json -w",
+    "build": "tsc -p tsconfig.json --sourceMap false --noEmitOnError true --listFiles true --diagnostics true",
+    "prettier-format": "prettier --config .prettierrc \"./src\" \"./types\" --write"
   },
   "repository": {
     "type": "git",
