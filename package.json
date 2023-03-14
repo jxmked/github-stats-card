@@ -9,7 +9,7 @@
     "dev": "tsc -p tsconfig.json -w",
     "build": "tsc -p tsconfig.json --sourceMap false --noEmitOnError true --listFiles true --diagnostics true",
     "prettier-format": "prettier --config .prettierrc \"./src\" \"./types\" --write",
-    "serve": "serve -p 9000 -n -L \"./dist\""
+    "serve": "node \"./dist/api/index.js\""
   },
   "repository": {
     "type": "git",
@@ -30,7 +30,6 @@
     "express": "^4.18.2",
     "lodash": "^4.17.21",
     "prettier": "^2.8.4",
-    "serve": "^14.2.0",
     "typescript": "^4.9.5"
   }
 }
