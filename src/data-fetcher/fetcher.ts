@@ -25,7 +25,7 @@ export const enum BASE_API_URL {
 }
 
 export default class Fetcher {
-  private readonly repoFirstCount = 100; /** MAX Possible request **/
+  private readonly repoFirstCount = 5; /** MAX Possible request **/
   private readonly REGISTERED_TOKEN = new Set<string>();
 
   constructor(private readonly props: IFetcherConstructor) {
@@ -199,6 +199,8 @@ export default class Fetcher {
 
         break;
       } while (true);
+
+      hasBeenSet = true;
     } while (hasNext);
 
     return Object.assign(records, {
