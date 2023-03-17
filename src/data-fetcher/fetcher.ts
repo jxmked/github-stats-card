@@ -25,7 +25,7 @@ export const enum BASE_API_URL {
 }
 
 export default class Fetcher {
-  private readonly repoFirstCount = 5; /** MAX Possible request **/
+  private readonly repoFirstCount = 100; /** MAX Possible request **/
   private readonly REGISTERED_TOKEN = new Set<string>();
 
   constructor(private readonly props: IFetcherConstructor) {
@@ -151,7 +151,7 @@ export default class Fetcher {
     }
   }
 
-  public async doFetchStats() {
+  public async doFetchStats(): Promise<IGraphQLResponse> {
     let lastCursor: null | string = null;
     let hasNext: boolean = false;
     let repoCount: number = 0;
@@ -206,7 +206,7 @@ export default class Fetcher {
     return Object.assign(records, {
       repositories: repos,
       total: repoCount
-    });
+    }) as IGraphQLResponse;
   }
 
   public async doFetchInfo(): Promise<IGithubRestApiUserInfo> {
@@ -228,7 +228,7 @@ export default class Fetcher {
 
       const response = tried.value;
       const data = response?.data;
-
+      
       if (response?.status !== 200 || typeof data === void 0) {
         // Considered Bad Token, Consumed or something I don't like
         continue;

@@ -5,7 +5,7 @@
  *
  * */
 
-interface IGraphQLResponse {
+interface IGraphQLResponse { /** Base **/
   name: string;
   id: string;
   contributionsCollection: ContributionsCollection;

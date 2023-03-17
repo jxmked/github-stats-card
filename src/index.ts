@@ -1,21 +1,34 @@
 import dotenv from 'dotenv';
+import Fetcher from './data-fetcher/fetcher';
+import express from 'express'
 
 dotenv.config();
 
-import Fetcher from './data-fetcher/fetcher';
 
-import fs from 'fs';
+const app = express()
+const port = process.env.port??9000;
 
-const ff = new Fetcher({
-  username: 'jxmked'
+
+const func = (req, res) => {
+  console.log(req)
+  res.send("hey")
+}
+
+const main = (req, res) => {
+  console.log(req)
+  res.send("hey")
+}
+
+const sele = (req, res) => {
+  console.log(req)
+  res.send("hey")
+}
+
+app.get("/", main)
+app.get("/:userid/stats-card", sele)
+app.get("/stats-card/starship-avalon", func)
+
+app.listen(port, () => {
+  console.log(`Running on http://localhost:${port}`)
 });
 
-ff.doFetchStats()
-  .then((res) => {
-    fs.writeFileSync('data.json', JSON.stringify(res));
-  })
-  .catch((err) => {
-    console.log('err');
-  });
-
-export {};
