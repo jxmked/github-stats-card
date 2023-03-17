@@ -186,15 +186,17 @@ export default class Fetcher {
           // Considered Bad Token, Consumed or something I don't like
           continue;
         }
-
-        lastCursor = data.data.user.repositories.pageInfo.endCursor as string;
-        hasNext = data.data.user.repositories.pageInfo.hasNext;
-        repoCount += data.data.user.repositories.totalCount;
-
-        repos.push(...data.data.user.repositories.nodes);
-
-        delete data.data.user['repositories'];
-
+        
+        if("repositories" in data.data.user) {
+          lastCursor = data.data.user.repositories.pageInfo.endCursor as string;
+          hasNext = data.data.user.repositories.pageInfo.hasNext;
+          repoCount += data.data.user.repositories.totalCount;
+  
+          repos.push(...data.data.user.repositories.nodes);
+  
+          delete data.data.user['repositories'];
+        }
+        
         if (!hasBeenSet) Object.assign(records, data.data.user);
 
         break;

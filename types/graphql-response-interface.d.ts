@@ -8,13 +8,13 @@
 interface IGraphQLResponse { /** Base **/
   name: string;
   id: string;
-  contributionsCollection: ContributionsCollection;
-  repositoriesContributedTo: ClosedIssues;
-  pullRequests: ClosedIssues;
-  openIssues: ClosedIssues;
-  closedIssues: ClosedIssues;
-  followers: ClosedIssues;
-  repositories: Repository[];
+  contributionsCollection: IContributionsCollection;
+  repositoriesContributedTo: IClosedIssues;
+  pullRequests: IClosedIssues;
+  openIssues: IClosedIssues;
+  closedIssues: IClosedIssues;
+  followers: IClosedIssues;
+  repositories: IRepository[];
   total: number;
 }
 
@@ -25,15 +25,15 @@ interface IClosedIssues {
 interface IContributionsCollection {
   totalCommitContributions: number;
   restrictedContributionsCount: number;
-  contributionCalendar: ContributionCalendar;
+  contributionCalendar: IContributionCalendar;
 }
 
 interface IContributionCalendar {
-  weeks: Week[];
+  weeks: IWeek[];
 }
 
 interface IWeek {
-  contributionDays: ContributionDay[];
+  contributionDays: IContributionDay[];
 }
 
 interface IContributionDay {
@@ -49,16 +49,16 @@ interface IRepository {
   isArchived: boolean;
   isTemplate: boolean;
   forkCount: number;
-  stargazers: ClosedIssues;
-  languages: Languages;
+  stargazers: IClosedIssues;
+  languages: ILanguages;
 }
 
 interface ILanguages {
-  edges: Edge[];
+  edges: IEdge[];
 }
 
 interface IEdge {
-  node: Node;
+  node: INode;
   size: number;
 }
 
