@@ -1,6 +1,3 @@
-
-
-
 /**
  * USERNAME
  * USER_ID
@@ -9,7 +6,7 @@
  * CHART_FULL_GRAPH
  * CHART_HALF_GRAPH
  * CHART_RECORD_HITS
- * 
+ *
  * < Fill this with 'style="animation: Anim 3s linear infinite 0s" only >
  * CORE_PANEL_A
  * CORE_PANEL_B
@@ -19,10 +16,10 @@
  * CORE_PANEL_F
  * CORE_PANEL_G
  * CORE_PANEL_H
- * 
+ *
  * STATS_RECORD
  * GRAPH_DATA
- * 
+ *
  * */
 export const bottom = `
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1555 856" id="main-card">

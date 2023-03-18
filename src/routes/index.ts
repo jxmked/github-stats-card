@@ -1,5 +1,5 @@
-import bottom from './bottom'
+import bottom from './bottom';
 
 export const partial = {
   bottom
-}
+};

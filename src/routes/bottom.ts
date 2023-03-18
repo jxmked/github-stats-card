@@ -1,4 +1,3 @@
-
 import { Request, Response } from 'express';
 import Template from 'lodash/template.js';
 import { bottom } from './templates/starship-avalon';
@@ -6,48 +5,47 @@ import { optimize } from 'svgo';
 import Fetcher from '../data-fetcher/fetcher';
 import numeral from 'numeral';
 
-export default class Bottom  {
+export default class Bottom {
   private parsed: ReturnType<typeof Template>;
   private userid: number;
-   
+
   constructor() {
     this.parsed = Template(bottom);
     this.userid = 0;
   }
-  
-  
-  async validateAccount(fetcher:Fetcher): Promise<boolean>{
+
+  async validateAccount(fetcher: Fetcher): Promise<boolean> {
     try {
       const data = await fetcher.doFetchInfo();
-      
+
       this.userid = data.id;
-      
+
       /**
        * We can also block or restrict other user if needed
        * */
       return data.type === 'User';
-    } catch(err) {}
-    
+    } catch (err) {}
+
     return false;
   }
-  
-  
-  
-  
+
   formatNum(value: number): string {
-    return numeral(value).format("0.0a").replace(/\.0/, "");
+    return numeral(value).format('0.0a').replace(/\.0/, '');
   }
 
-  
-  insertTrailing(label:string, count:string, trail:string="-", charSpace:number=36): string {
+  insertTrailing(
+    label: string,
+    count: string,
+    trail: string = '-',
+    charSpace: number = 36
+  ): string {
     const labelLen = label.length;
     const countLen = count.length;
-    
-    return `${label} ${trail.repeat(charSpace - (labelLen + countLen + 2))} ${count}`
+
+    return `${label} ${trail.repeat(charSpace - (labelLen + countLen + 2))} ${count}`;
   }
-  
-  generateGraph(data:IGraphQLResponse) {
-    
+
+  generateGraph(data: IGraphQLResponse) {
     /**
      * Graph Range | x y
      * 245 720  -> 920 555
@@ -59,19 +57,19 @@ export default class Bottom  {
       dy: 555,
       width: 0,
       height: 0
-    }
-    
+    };
+
     graph.width = graph.dx - graph.sx;
     graph.height = graph.dy - graph.sy;
-    
-     /** Extract Record **/
+
+    /** Extract Record **/
     const records = data.contributionsCollection.contributionCalendar.weeks;
-    
+
     /**
      * past -> present
      * */
-    const commitPerDays:number[] = [];
-    
+    const commitPerDays: number[] = [];
+
     for (const { contributionDays } of records) {
       for (const { contributionCount } of contributionDays) {
         commitPerDays.push(contributionCount);
@@ -81,89 +79,94 @@ export default class Bottom  {
     const highestCommit = Math.max(...commitPerDays);
     const xDiff = graph.width / commitPerDays.length;
     const scale = graph.height / highestCommit;
-    const graphData = commitPerDays.map((num:number, count:number) => {
-      count = count + 1;
-      const attr = (count === 1) ? "M" : "L";
-      return `${attr} ${(graph.sx + (xDiff * count)).toFixed(2)} ${(graph.sy + (num * scale)).toFixed(2)}`
-      
-    }).join(" ")
-    console.log(graphData)
+    const graphData = commitPerDays
+      .map((num: number, count: number) => {
+        count = count + 1;
+        const attr = count === 1 ? 'M' : 'L';
+        return `${attr} ${(graph.sx + xDiff * count).toFixed(2)} ${(
+          graph.sy +
+          num * scale
+        ).toFixed(2)}`;
+      })
+      .join(' ');
+    console.log(graphData);
     return {
       graph: graphData,
       maxCommit: highestCommit,
-      midCommit: highestCommit/2,
-      recordLength: commitPerDays.length,
-    } as { graph: string, maxCommit: number, midCommit:number, recordLength:number }
+      midCommit: highestCommit / 2,
+      recordLength: commitPerDays.length
+    } as { graph: string; maxCommit: number; midCommit: number; recordLength: number };
   }
-  
-  generateStats(data:IGraphQLResponse) {
+
+  generateStats(data: IGraphQLResponse) {
     const pos = {
       x: 165,
       y: 260 /** Initial | Max 460 **/
-    }
+    };
     const spacing = 50;
-    const parsed = Template(`<text x="<%= X %>" y="<%= Y %>" fill="rgb(174, 174, 178)" font-size="35" font-weight="bold" font-family="monospace" text-anchor="start"><%= CONTENT %></text>`)
+    const parsed = Template(
+      `<text x="<%= X %>" y="<%= Y %>" fill="rgb(174, 174, 178)" font-size="35" font-weight="bold" font-family="monospace" text-anchor="start"><%= CONTENT %></text>`
+    );
 
-    
-    const tIssues = this.formatNum(data.openIssues.totalCount + data.closedIssues.totalCount);
+    const tIssues = this.formatNum(
+      data.openIssues.totalCount + data.closedIssues.totalCount
+    );
     let starsCount = 0;
-    data.repositories.map((repo:IRepository) => starsCount += repo.stargazers.totalCount);
-  
-    const tStars = this.formatNum(starsCount)
-    const tPRs = this.formatNum(data.pullRequests.totalCount)
-    const tCont = this.formatNum(data.repositoriesContributedTo.totalCount)
+    data.repositories.map(
+      (repo: IRepository) => (starsCount += repo.stargazers.totalCount)
+    );
+
+    const tStars = this.formatNum(starsCount);
+    const tPRs = this.formatNum(data.pullRequests.totalCount);
+    const tCont = this.formatNum(data.repositoriesContributedTo.totalCount);
     const tComm = this.formatNum(
-      data.contributionsCollection.totalCommitContributions + 
-      data.contributionsCollection.restrictedContributionsCount)
-    
+      data.contributionsCollection.totalCommitContributions +
+        data.contributionsCollection.restrictedContributionsCount
+    );
+
     const stats = {
-      "Stars Earned": tStars,
-      "Total Commits": tComm,
-      "Pull Request": tPRs,
-      "Issues": tIssues,
-      "Contributes (last year)": tCont
-    }
-    
+      'Stars Earned': tStars,
+      'Total Commits': tComm,
+      'Pull Request': tPRs,
+      'Issues': tIssues,
+      'Contributes (last year)': tCont
+    };
+
     return Object.entries(stats).map(([k, v], index) => {
       return parsed({
         X: pos.x,
-        Y: pos.y + ((index) * spacing),
+        Y: pos.y + index * spacing,
         CONTENT: this.insertTrailing(k, v)
-      })
-    })
+      });
+    });
   }
-  
-  
-  
-  async handle(req: Request, res:Response): Promise<void>{
+
+  async handle(req: Request, res: Response): Promise<void> {
     const { username } = req.params;
-    
-    
-    const fObject = new Fetcher({username})
-    
+
+    const fObject = new Fetcher({ username });
+
     const isValidAccount = await this.validateAccount(fObject);
 
-    if(!isValidAccount) {
-      res.send("Invalid account");
+    if (!isValidAccount) {
+      res.send('Invalid account');
       return;
     }
-    
+
     const data = await fObject.doFetchStats();
-    
-    
+
     const statsData = this.generateStats(data);
-    const graphData = this.generateGraph(data)
-    
-    
+    const graphData = this.generateGraph(data);
+
     const cacheSeconds = 60 * 60 * 12; // 12 hours in seconds
     const staleWhileRevalidateSeconds = 60 * 60 * 24; // 1 day in seconds
-    
-    res.setHeader("Content-Type", "image/svg+xml");
+
+    res.setHeader('Content-Type', 'image/svg+xml');
     res.setHeader(
-      "Cache-Control",
+      'Cache-Control',
       `max-age=${cacheSeconds}, s-maxage=${cacheSeconds}, stale-while-revalidate=${staleWhileRevalidateSeconds}`
     );
-    
+
     const compiled = this.parsed({
       USERNAME: username,
       CARD_INFO: 'USR_STATS',
@@ -180,13 +183,10 @@ export default class Bottom  {
       CORE_PANEL_F: 'class="corefailed"',
       CORE_PANEL_G: 'class="corefailed"',
       CORE_PANEL_H: 'class="corefailed"',
-      STATS_RECORD: statsData.join(""),
+      STATS_RECORD: statsData.join(''),
       GRAPH_DATA: graphData.graph
-    })
-    
-    res.send(compiled)
-   // res.send(optimize(compiled).data)
-    
+    });
+
+    res.send(optimize(compiled).data)
   }
 }
-
