@@ -125,11 +125,11 @@ export default class Bottom {
         ERROR_CONTENT: 'INVALID REQUEST'
       })
     });
-    
+
     try {
       res.send(optimize(compiled).data);
-    } catch(err) {
-      res.send(BaseError)
+    } catch (err) {
+      res.send(BaseError);
     }
   }
 
@@ -264,11 +264,11 @@ export default class Bottom {
       GRAPH_DATA: graphData.graph,
       AFTER_CONTENT: ''
     });
-    
+
     try {
       res.send(optimize(compiled).data);
-    } catch(err) {
-      res.send(BaseError)
+    } catch (err) {
+      res.send(BaseError);
     }
   }
 }
