@@ -1,6 +1,7 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
 import { ERROR_CODE } from '../error-constants';
+import moment from 'moment'
 
 dotenv.config();
 
@@ -19,7 +20,7 @@ export interface IRetryRequestInfo {
   data?: IRetryDataType;
 }
 
-export const enum BASE_API_URL {
+export enum BASE_API_URL {
   REST = 'https://api.github.com/users',
   GRAPHQL = 'https://api.github.com/graphql'
 }
@@ -27,10 +28,11 @@ export const enum BASE_API_URL {
 export default class Fetcher {
   private readonly repoFirstCount = 100; /** MAX Possible request **/
   private readonly REGISTERED_TOKEN = new Set<string>();
-
+  private dateRange: number;
   constructor(private readonly props: IFetcherConstructor) {
     /**
-     * Save all Token into map
+     * Iterate env and check 'AUTH_TOKEN_###' for available token
+     * Save all Token into set
      * */
     let index: number = 0;
     do {
@@ -40,6 +42,8 @@ export default class Fetcher {
 
       this.REGISTERED_TOKEN.add(tk);
     } while (true);
+    
+    this.dateRange = 30; // days
   }
 
   private get repoGraphQLStructure(): string {
@@ -101,11 +105,11 @@ export default class Fetcher {
      *   $AFTER
      * */
     return `
-      query userInfo($login: String!, $AFTER: String) {
+      query userInfo($login: String!, $AFTER: String, $FROM: DateTime!, $TO: DateTime!) {
         user(login: $login) {
           name
           id
-          contributionsCollection {
+          contributionsCollection(from: $FROM, to: $TO) {
             totalCommitContributions
             restrictedContributionsCount
             contributionCalendar {
@@ -158,7 +162,13 @@ export default class Fetcher {
     let hasBeenSet: boolean = false;
     const records = {};
     const repos = [];
+    
+    // Steal from https://github.com/Ashutosh00710/github-readme-activity-graph
+    const now = moment();
+    const from = moment(now).subtract(30, 'days').utc().toISOString();
+    const to = moment(now).add(1, 'days').utc().toISOString();
 
+    
     do {
       const tries = await this.retry({
         url: BASE_API_URL.GRAPHQL,
@@ -167,7 +177,9 @@ export default class Fetcher {
           query: hasBeenSet ? this.repoQuery() : this.statsQuery(),
           variables: {
             login: this.props.username,
-            AFTER: lastCursor
+            AFTER: lastCursor,
+            FROM: from,
+            TO: to
           }
         }
       });
@@ -187,7 +199,16 @@ export default class Fetcher {
           continue;
         }
         
-        if("repositories" in data.data.user) {
+        /**
+         * having a problem here?
+         * Try to check the graphql query and validate it 
+         * before fucking up some codes here.
+         * */
+        if(
+            typeof data !== void 0 &&
+            typeof data.data !== void 0 &&
+            typeof data.data.user !== void 0 &&
+            "repositories" in data.data.user) {
           lastCursor = data.data.user.repositories.pageInfo.endCursor as string;
           hasNext = data.data.user.repositories.pageInfo.hasNext;
           repoCount += data.data.user.repositories.totalCount;
@@ -212,10 +233,8 @@ export default class Fetcher {
   }
 
   public async doFetchInfo(): Promise<IGithubRestApiUserInfo> {
-    const base = `${BASE_API_URL.REST}/${this.props.username}`;
-
     const request = {
-      url: base,
+      url: `${BASE_API_URL.REST}/${this.props.username}`,
       method: 'GET'
     } satisfies IRetryRequestInfo;
 

@@ -21,6 +21,7 @@
  * CORE_PANEL_H
  * 
  * STATS_RECORD
+ * GRAPH_DATA
  * 
  * */
 export const bottom = `
@@ -184,23 +185,7 @@ export const bottom = `
       <text x="930" y="760" text-anchor="end" font-family="monospace" font-size="30" fill="rgb(167, 202, 224)">Public commits</text>
 
       <path
-        d="M 245 720
-        L 276 640
-        L 322 590
-        L 368 628
-        L 414 705
-        L 460 710
-        L 506 688
-        L 552 638
-        L 598 720
-        L 644 710
-        L 690 711
-        L 736 700
-        L 782 698
-        L 828 598
-        L 847 590
-        L 920 555
-        "
+        d="<%= GRAPH_DATA %>"
         fill="none"
         stroke-width="3"
         stroke="white"

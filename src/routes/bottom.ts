@@ -34,11 +34,10 @@ export default class Bottom  {
   
   
   
-  formatNum(value:number):string {
-    const knum = numeral(value).format("0.0a");
-    
-    return knum.replace(/(?=)/i, "")
+  formatNum(value: number): string {
+    return numeral(value).format("0.0a").replace(/\.0/, "");
   }
+
   
   insertTrailing(label:string, count:string, trail:string="-", charSpace:number=36): string {
     const labelLen = label.length;
@@ -47,9 +46,57 @@ export default class Bottom  {
     return `${label} ${trail.repeat(charSpace - (labelLen + countLen + 2))} ${count}`
   }
   
-  async generateStats(fetcher:Fetcher) {
-    const data = await fetcher.doFetchStats();
+  generateGraph(data:IGraphQLResponse) {
     
+    /**
+     * Graph Range | x y
+     * 245 720  -> 920 555
+     * */
+    const graph = {
+      sx: 245,
+      sy: 720,
+      dx: 920,
+      dy: 555,
+      width: 0,
+      height: 0
+    }
+    
+    graph.width = graph.dx - graph.sx;
+    graph.height = graph.dy - graph.sy;
+    
+     /** Extract Record **/
+    const records = data.contributionsCollection.contributionCalendar.weeks;
+    
+    /**
+     * past -> present
+     * */
+    const commitPerDays:number[] = [];
+    
+    for (const { contributionDays } of records) {
+      for (const { contributionCount } of contributionDays) {
+        commitPerDays.push(contributionCount);
+      }
+    }
+
+    const highestCommit = Math.max(...commitPerDays);
+    const xDiff = graph.width / commitPerDays.length;
+    const scale = graph.height / highestCommit;
+    const graphData = commitPerDays.map((num:number, count:number) => {
+      count = count + 1;
+      const attr = (count === 1) ? "M" : "L";
+      return `${attr} ${(graph.sx + (xDiff * count)).toFixed(2)} ${(graph.sy + (num * scale)).toFixed(2)}`
+      
+    }).join(" ")
+    console.log(graphData)
+    return {
+      graph: graphData,
+      maxCommit: highestCommit,
+      midCommit: highestCommit/2,
+      recordLength: commitPerDays.length,
+    } as { graph: string, maxCommit: number, midCommit:number, recordLength:number }
+  }
+  
+  generateStats(data:IGraphQLResponse) {
     const pos = {
       x: 165,
       y: 260 /** Initial | Max 460 **/
@@ -84,7 +131,6 @@ export default class Bottom  {
         CONTENT: this.insertTrailing(k, v)
       })
     })
-    
   }
   
   
@@ -102,7 +148,12 @@ export default class Bottom  {
       return;
     }
     
-    const statsData = await this.generateStats(fObject)
+    const data = await fObject.doFetchStats();
+    
+    
+    const statsData = this.generateStats(data);
+    const graphData = this.generateGraph(data)
+    
     
     const cacheSeconds = 60 * 60 * 12; // 12 hours in seconds
     const staleWhileRevalidateSeconds = 60 * 60 * 24; // 1 day in seconds
@@ -118,9 +169,9 @@ export default class Bottom  {
       CARD_INFO: 'USR_STATS',
       USER_ID: String(this.userid),
       RANK: 'S++',
-      CHART_FULL_GRAPH: '7K',
-      CHART_HALF_GRAPH: '3.5k',
-      CHART_RECORD_HITS: '288',
+      CHART_FULL_GRAPH: this.formatNum(graphData.maxCommit),
+      CHART_HALF_GRAPH: this.formatNum(graphData.midCommit),
+      CHART_RECORD_HITS: graphData.recordLength,
       CORE_PANEL_A: 'style="animation: Anim 3s linear infinite 0s"',
       CORE_PANEL_B: 'class="corefailed"',
       CORE_PANEL_C: 'class="corefailed"',
@@ -129,10 +180,12 @@ export default class Bottom  {
       CORE_PANEL_F: 'class="corefailed"',
       CORE_PANEL_G: 'class="corefailed"',
       CORE_PANEL_H: 'class="corefailed"',
-      STATS_RECORD: statsData.join("")
+      STATS_RECORD: statsData.join(""),
+      GRAPH_DATA: graphData.graph
     })
     
-    res.send(optimize(compiled).data)
+    res.send(compiled)
+   // res.send(optimize(compiled).data)
     
   }
 }
