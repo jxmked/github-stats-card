@@ -35,7 +35,6 @@
     "nodemon": "^2.0.21",
     "numeral": "^2.0.6",
     "prettier": "^2.8.4",
-    "pretty-num": "^0.5.2",
     "rimraf": "^4.4.0",
     "svgo": "^3.0.2",
     "typescript": "^4.9.5"
