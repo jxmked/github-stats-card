@@ -4,6 +4,7 @@ import { bottom, Error_Banner } from './templates/starship-avalon';
 import { optimize } from 'svgo';
 import Fetcher from '../data-fetcher/fetcher';
 import { calculateRank, IRankParams, formatNumber } from '../utils';
+import { BaseError } from './templates/svgs';
 
 export default class Bottom {
   private parsed: ReturnType<typeof Template>;
@@ -124,8 +125,12 @@ export default class Bottom {
         ERROR_CONTENT: 'INVALID REQUEST'
       })
     });
-
-    res.send(optimize(compiled).data);
+    
+    try {
+      res.send(optimize(compiled).data);
+    } catch(err) {
+      res.send(BaseError)
+    }
   }
 
   generateGraph(data: IGraphQLResponse) {
@@ -247,19 +252,23 @@ export default class Bottom {
       CHART_FULL_GRAPH: formatNumber(graphData.maxCommit),
       CHART_HALF_GRAPH: formatNumber(graphData.midCommit),
       CHART_RECORD_HITS: graphData.recordLength,
-      CORE_PANEL_A: 'style="animation: Anim 3s linear infinite 0s"',
-      CORE_PANEL_B: 'class="corefailed"',
-      CORE_PANEL_C: 'class="corefailed"',
-      CORE_PANEL_D: 'class="corefailed"',
-      CORE_PANEL_E: 'class="corefailed"',
-      CORE_PANEL_F: 'class="corefailed"',
-      CORE_PANEL_G: 'class="corefailed"',
-      CORE_PANEL_H: 'class="corefailed"',
+      CORE_PANEL_A: '',
+      CORE_PANEL_B: '',
+      CORE_PANEL_C: '',
+      CORE_PANEL_D: '',
+      CORE_PANEL_E: '',
+      CORE_PANEL_F: '',
+      CORE_PANEL_G: '',
+      CORE_PANEL_H: '',
       STATS_RECORD: statsData.join(''),
       GRAPH_DATA: graphData.graph,
       AFTER_CONTENT: ''
     });
-
-    res.send(optimize(compiled).data);
+    
+    try {
+      res.send(optimize(compiled).data);
+    } catch(err) {
+      res.send(BaseError)
+    }
   }
 }
