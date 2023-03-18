@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import Template from 'lodash/template.js';
 import { bottom, Error_Banner } from './templates/starship-avalon';
 import { optimize } from 'svgo';
-import Fetcher from '../data-fetcher/fetcher';
+import Fetcher from '../model/fetcher';
 import { calculateRank, IRankParams, formatNumber } from '../utils';
 import { BaseError } from './templates/svgs';
 
@@ -60,7 +60,13 @@ export default class Bottom {
     };
     const spacing = 50;
     const parsed = Template(
-      `<text x="<%= X %>" y="<%= Y %>" fill="rgb(174, 174, 178)" font-size="35" font-weight="bold" font-family="monospace" text-anchor="start"><%= CONTENT %></text>`
+      `<text 
+        x="<%= X %>" y="<%= Y %>" 
+        fill="rgb(174, 174, 178)" 
+        font-size="35" 
+        font-weight="bold" 
+        font-family="monospace" 
+        text-anchor="start"><%= CONTENT %></text>`
     );
 
     return Object.entries(stats).map(([k, v], index): string => {
@@ -83,15 +89,6 @@ export default class Bottom {
       E_FETCH_RET_NULL: 'Fail',
       E_GENERATE_NULL: 'Fail'
     });
-
-    const cacheSeconds = 60 * 60 * 12; // 12 hours in seconds
-    const staleWhileRevalidateSeconds = 60 * 60 * 24; // 1 day in seconds
-
-    res.setHeader('Content-Type', 'image/svg+xml');
-    res.setHeader(
-      'Cache-Control',
-      `max-age=${cacheSeconds}, s-maxage=${cacheSeconds}, stale-while-revalidate=${staleWhileRevalidateSeconds}`
-    );
 
     const animStyle = Template(
       'style="animation: Anim <%= interval %>s linear infinite <%= delay %>s"'
@@ -117,7 +114,7 @@ export default class Bottom {
       CORE_PANEL_D: animStyle(rand(4, 3)),
       CORE_PANEL_E: animStyle(rand(5, 3)),
       CORE_PANEL_F: animStyle(rand(4, 5)),
-      CORE_PANEL_G: animStyle(rand(7, 2)),
+      CORE_PANEL_G: animStyle(rand(6, 2)),
       CORE_PANEL_H: animStyle(rand(2, 3)),
       STATS_RECORD: statsData.join(''),
       GRAPH_DATA: 'M0 0H720',
@@ -182,7 +179,7 @@ export default class Bottom {
       maxCommit: highestCommit,
       midCommit: highestCommit / 2,
       recordLength: commitPerDays.length
-    } as { graph: string; maxCommit: number; midCommit: number; recordLength: number };
+    };
   }
 
   generateStats(data: IGraphQLResponse) {
@@ -225,6 +222,17 @@ export default class Bottom {
     const fObject = new Fetcher({ username });
     const isValidAccount = await this.validateAccount(fObject);
 
+    const cacheSeconds = 60 * 60 * 12; // 12 hours in seconds
+    const staleWhileRevalidateSeconds = 60 * 60 * 24; // 1 day in seconds
+
+    res.setHeader('Content-Type', 'image/svg+xml');
+    res.setHeader(
+      'Cache-Control',
+      `max-age=${cacheSeconds},${' '
+      }s-maxage=${cacheSeconds},${''
+      }stale-while-revalidate=${staleWhileRevalidateSeconds}`
+    );
+
     if (!isValidAccount) {
       this.errorCard(req, res);
       return;
@@ -234,15 +242,6 @@ export default class Bottom {
 
     const statsData = this.generateStats(data);
     const graphData = this.generateGraph(data);
-
-    const cacheSeconds = 60 * 60 * 12; // 12 hours in seconds
-    const staleWhileRevalidateSeconds = 60 * 60 * 24; // 1 day in seconds
-
-    res.setHeader('Content-Type', 'image/svg+xml');
-    res.setHeader(
-      'Cache-Control',
-      `max-age=${cacheSeconds}, s-maxage=${cacheSeconds}, stale-while-revalidate=${staleWhileRevalidateSeconds}`
-    );
 
     const compiled = this.parsed({
       USERNAME: username,

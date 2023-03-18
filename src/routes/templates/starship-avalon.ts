@@ -45,123 +45,6 @@ export const bottom = `
   </g>
   <g>
     <!--  Reactor Section -->
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" x="1010" y="105" width="420">
-      <style>
-        :root {
-        --backplate-stroke: rgb(63, 125, 150);
-        --backplate-fill: rgb(174, 174, 178);
-        --backplate-stroke-f: rgb(63, 125, 150);
-        --backplate-fill-f: rgb(174, 174, 178);
-        --coil-color: rgb(174, 174, 178);
-        --coil-outline: none;
-        --base-color: rgb(68, 68, 70);
-        }
-
-        @keyframes Anim {
-          0% {
-            --backplate-fill: rgb(174, 174, 178);
-            --backplate-stroke: rgb(63, 125, 150);
-          }
-          100% {
-            --backplate-fill: rgb(215, 0, 21);
-            --backplate-stroke: rgb(194, 6, 24);
-          }
-        }
-      </style>
-      <defs>
-        <g id="coil">
-          <!-- Inner Coil -->
-          <path d="M 100.6 73.7 L 108.4 84.8 C 112 90, 112 90 110.5 83.3 L 107.9 70.7 Z" fill="var(--backplate-fill-f)" stroke="var(--backplate-stroke-f)" />
-
-          <!-- Outisde Coil -->
-          <path d="M 131 110.8 Q 135.4 111.3, 138.9 114.2 L 144 107 Q 139.1 103.2, 133 102 Z" fill="var(--coil-color)" stroke="var(--coil-outline)" />
-        </g>
-
-        <g id="backplate">
-          <use href="#coil" />
-
-          <g>
-            <!-- Frame -->
-            <path d="M 144 11 L 133 80 L 122 80 L 112 11 L 104 12 Q 100 13, 101 17 L 109 65 L 116 89.8 Q 127.5 86.3 ,139 89.5 L 146 65 L 155 17 Q 156 13 152 12 Z" fill="var(--backplate-fill)" stroke="var(--backplate-stroke)" />
-            <path d="M 125 83 C 123 83, 123 86, 125 86 L 131 86 C 133 86, 133 83, 131 83 Z" fill="var(--backplate-fill-f)" stroke="var(--backplate-stroke)" />
-          </g>
-
-          <g id="idk">
-            <!-- Long bar -->
-            <path d="M 78 130 L 73 132 L 14 132 L 14 124 L 73 124 L 78 126 Z" fill="var(--backplate-fill-f)" stroke="var(--backplate-stroke-f)" />
-            <path d="M 78 126 L 78 130 H 5 V 126 Z" fill="var(--base-color)" stroke="var(--backplate-stroke-f)" />
-          </g>
-          <g>
-            <!-- Short Bar -->
-            <path d="M 69 100 L 26 81 Q 20.4 83.5, 23 89 L 66 107 Z" fill="var(--backplate-fill-f)" stroke="var(--backplate-stroke-f)" />
-            <path d="M 22 86 L 62.5 102.6 L 63.5 100.5 L 23.5 82.8" fill="var(--base-color)" stroke="var(--backplate-stroke-f)" />
-          </g>
-        </g>
-
-        <!-- Bar inside -->
-        <path id="bar-idk" d="M 126 91 V 101 Q 128 100.8 ,130 101 V 91 Z" fill="var(--backplate-fill-f)" stroke="var(--backplate-stroke-f)" />
-        <g id="batch-bars">
-          <use href="#bar-idk" transform="rotate(0, 128, 128)" />
-          <use href="#bar-idk" transform="rotate(90, 128, 128)" />
-          <use href="#bar-idk" transform="rotate(180, 128, 128)" />
-          <use href="#bar-idk" transform="rotate(270, 128, 128)" />
-        </g>
-        <g id="bars-inside">
-          <use href="#batch-bars" transform="rotate(0, 128, 128)" />
-          <use href="#batch-bars" transform="rotate(20, 128, 128)" />
-          <use href="#batch-bars" transform="rotate(40, 128, 128)" />
-          <use href="#batch-bars" transform="rotate(60, 128, 128)" />
-          <use href="#batch-bars" transform="rotate(80, 128, 128)" />
-        </g>
-
-        <!-- Bar outside -->
-        <polygon id="bar-idk-outside" points="127 32 127 23 129 23 129 32" fill="var(--backplate-fill-f)" stroke="var(--backplate-stroke-f)" transform="rotate(5, 128, 128)" />
-        <g id="batch-bars-outside">
-          <use href="#bar-idk-outside" transform="rotate(0, 128, 128)" />
-          <use href="#bar-idk-outside" transform="rotate(12, 128, 128)" />
-          <use href="#bar-idk-outside" transform="rotate(22.5, 128, 128)" />
-          <use href="#bar-idk-outside" transform="rotate(35, 128, 128)" />
-        </g>
-        <g id="bars-outside">
-          <use href="#batch-bars-outside" transform="rotate(0, 128, 128)" />
-          <use href="#batch-bars-outside" transform="rotate(90, 128, 128)" />
-          <use href="#batch-bars-outside" transform="rotate(180, 128, 128)" />
-          <use href="#batch-bars-outside" transform="rotate(270, 128, 128)" />
-        </g>
-      </defs>
-
-      <g>
-        <!-- base -->
-        <circle cx="128" cy="128" r="107.4" fill="none" stroke-width="1" stroke="var(--backplate-stroke-f)" />
-        <use href="#bars-outside" transform="rotate(0, 128, 128)" />
-        <use href="#bars-outside" transform="rotate(45, 128, 128)" />
-      </g>
-
-      <g>
-        <circle cx="128" cy="128" r="60" fill="none" stroke-width="1" stroke="var(--backplate-stroke-f)" />
-        <circle cx="128" cy="128" r="44" fill="none" stroke-width="1" stroke="var(--backplate-stroke-f)" />
-      </g>
-
-      <g id="backplates">
-        <use href="#backplate" transform="rotate(0, 128, 128)" <%= CORE_PANEL_A %> />
-        <use href="#backplate" transform="rotate(45, 128, 128)" <%= CORE_PANEL_B %> />
-        <use href="#backplate" transform="rotate(90, 128, 128)" <%= CORE_PANEL_C %> />
-        <use href="#backplate" transform="rotate(135, 128, 128)" <%= CORE_PANEL_D %> />
-        <use href="#backplate" transform="rotate(180, 128, 128)" <%= CORE_PANEL_E %> />
-        <use href="#backplate" transform="rotate(225, 128, 128)" <%= CORE_PANEL_F %> />
-        <use href="#backplate" transform="rotate(270, 128, 128)" <%= CORE_PANEL_G %> />
-        <use href="#backplate" transform="rotate(315, 128, 128)" <%= CORE_PANEL_H %> />
-      </g>
-      <g>
-        <circle cx="128" cy="128" r="3" fill="none" stroke-width="2" stroke="var(--backplate-fill-f)" />
-        <circle cx="128" cy="128" r="12" fill="none" stroke-width="5" stroke="var(--backplate-fill-f)" />
-        <circle cx="128" cy="128" r="18" fill="none" stroke-width="1" stroke="var(--backplate-fill-f)" />
-        <circle cx="128" cy="128" r="26" fill="none" stroke-width="1" stroke="var(--backplate-fill-f)" />
-        <circle cx="128" cy="128" r="40" fill="none" stroke-width="1" stroke="var(--backplate-fill-f)" />
-      </g>
-      <use href="#bars-inside" transform="rotate(0, 128, 128)" />
-      <use href="#bars-inside" transform="rotate(10, 128, 128)" />
-    </svg>
   </g>
 
   <g transform="translate(0, -25)">
@@ -181,7 +64,7 @@ export const bottom = `
 
     <g>
       <text x="330" y="760" text-anchor="middle" font-family="monospace" font-size="30" fill="rgb(167, 202, 224)"><%= CHART_RECORD_HITS %> days ago</text>
-      <text x="930" y="760" text-anchor="end" font-family="monospace" font-size="30" fill="rgb(167, 202, 224)">Public commits</text>
+      <text x="930" y="760" text-anchor="end" font-family="monospace" font-size="30" fill="rgb(167, 202, 224)">Commits</text>
 
       <path
         d="<%= GRAPH_DATA %>"

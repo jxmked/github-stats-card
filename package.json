@@ -15,7 +15,12 @@
     "type": "git",
     "url": "git+https://github.com/jxmked/github-stats-card.git"
   },
-  "keywords": [],
+  "keywords": [
+    "gh-stats-card",
+    "card",
+    "sci-fi",
+    "statistic"
+  ],
   "author": "Jovan De Guia <jovandeguia@gmail.com> (http://facebook.com/deguia25)",
   "license": "BSD-3-Clause",
   "bugs": {
@@ -31,7 +36,6 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "lodash": "^4.17.21",
-    "moment": "^2.29.4",
     "nodemon": "^2.0.21",
     "numeral": "^2.0.6",
     "prettier": "^2.8.4",

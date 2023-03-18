@@ -1,17 +1,15 @@
 import dotenv from 'dotenv';
-import Fetcher from './data-fetcher/fetcher';
 import express, { Request, Response } from 'express';
-import { partial } from './routes';
+import BottomPanel from './routes/bottom';
 
 dotenv.config();
 
 const app = express();
 const port = process.env.port ?? 9000;
 
-const bottom = new partial.bottom();
+const bottom = new BottomPanel();
 
 const main = (req: Request, res: Response) => {
-  console.log(req);
   res.send('Visit <a href="https://github.com/jxmked">Jovan\'s Github Account</a>');
 };
 

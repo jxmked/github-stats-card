@@ -1,7 +1,6 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
 import { ERROR_CODE } from '../error-constants';
-import moment from 'moment';
 
 dotenv.config();
 
@@ -28,7 +27,7 @@ export enum BASE_API_URL {
 export default class Fetcher {
   private readonly repoFirstCount = 100; /** MAX Possible request **/
   private readonly REGISTERED_TOKEN = new Set<string>();
-  private dateRange: number;
+  
   constructor(private readonly props: IFetcherConstructor) {
     /**
      * Iterate env and check 'AUTH_TOKEN_###' for available token
@@ -42,8 +41,6 @@ export default class Fetcher {
 
       this.REGISTERED_TOKEN.add(tk);
     } while (true);
-
-    this.dateRange = 30; // days
   }
 
   private get repoGraphQLStructure(): string {
@@ -228,7 +225,7 @@ export default class Fetcher {
     return Object.assign(records, {
       repositories: repos,
       total: repoCount
-    }) as IGraphQLResponse;
+    }) as IGraphQLResponse
   }
 
   public async doFetchInfo(): Promise<IGithubRestApiUserInfo> {
