@@ -104,12 +104,16 @@ export default class Fetcher {
      *   $USERNAME
      *   $AFTER
      * */
+
+    /**
+     * Will fetch contribution for past 370 days
+     * */
     return `
-      query userInfo($login: String!, $AFTER: String, $FROM: DateTime!, $TO: DateTime!) {
+      query userInfo($login: String!, $AFTER: String) {
         user(login: $login) {
           name
           id
-          contributionsCollection(from: $FROM, to: $TO) {
+          contributionsCollection {
             totalCommitContributions
             restrictedContributionsCount
             contributionCalendar {
@@ -163,11 +167,6 @@ export default class Fetcher {
     const records = {};
     const repos = [];
 
-    // Steal from https://github.com/Ashutosh00710/github-readme-activity-graph
-    const now = moment();
-    const from = moment(now).subtract(30, 'days').utc().toISOString();
-    const to = moment(now).add(1, 'days').utc().toISOString();
-
     do {
       const tries = await this.retry({
         url: BASE_API_URL.GRAPHQL,
@@ -176,9 +175,7 @@ export default class Fetcher {
           query: hasBeenSet ? this.repoQuery() : this.statsQuery(),
           variables: {
             login: this.props.username,
-            AFTER: lastCursor,
-            FROM: from,
-            TO: to
+            AFTER: lastCursor
           }
         }
       });
@@ -203,23 +200,25 @@ export default class Fetcher {
          * Try to check the graphql query and validate it
          * before fucking up some codes here.
          * */
-        if (
-          typeof data !== void 0 &&
-          typeof data.data !== void 0 &&
-          typeof data.data.user !== void 0 &&
-          'repositories' in data.data.user
-        ) {
-          lastCursor = data.data.user.repositories.pageInfo.endCursor as string;
-          hasNext = data.data.user.repositories.pageInfo.hasNext;
-          repoCount += data.data.user.repositories.totalCount;
+        try {
+          if (
+            typeof data !== void 0 &&
+            typeof data.data !== void 0 &&
+            typeof data.data.user !== void 0 &&
+            'repositories' in data.data.user
+          ) {
+            lastCursor = data.data.user.repositories.pageInfo.endCursor as string;
+            hasNext = data.data.user.repositories.pageInfo.hasNext;
+            repoCount += data.data.user.repositories.totalCount;
 
-          repos.push(...data.data.user.repositories.nodes);
+            repos.push(...data.data.user.repositories.nodes);
 
-          delete data.data.user['repositories'];
+            delete data.data.user['repositories'];
+          }
+          if (!hasBeenSet) Object.assign(records, data.data.user);
+        } catch (err) {
+          throw new TypeError(`${ERROR_CODE.QUERY_ERROR}`);
         }
-
-        if (!hasBeenSet) Object.assign(records, data.data.user);
-
         break;
       } while (true);
 

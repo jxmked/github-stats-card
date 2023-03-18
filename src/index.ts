@@ -12,10 +12,11 @@ const bottom = new partial.bottom();
 
 const main = (req: Request, res: Response) => {
   console.log(req);
-  res.send('hey');
+  res.send('Visit <a href="https://github.com/jxmked">Jovan\'s Github Account</a>');
 };
 
 app.get('/', main);
+app.get('/api', main);
 app.get('/api/:username', bottom.handle.bind(bottom));
 
 app.listen(port, () => {
