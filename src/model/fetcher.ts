@@ -27,7 +27,7 @@ export enum BASE_API_URL {
 export default class Fetcher {
   private readonly repoFirstCount = 100; /** MAX Possible request **/
   private readonly REGISTERED_TOKEN = new Set<string>();
-  
+
   constructor(private readonly props: IFetcherConstructor) {
     /**
      * Iterate env and check 'AUTH_TOKEN_###' for available token
@@ -225,7 +225,7 @@ export default class Fetcher {
     return Object.assign(records, {
       repositories: repos,
       total: repoCount
-    }) as IGraphQLResponse
+    }) as IGraphQLResponse;
   }
 
   public async doFetchInfo(): Promise<IGithubRestApiUserInfo> {

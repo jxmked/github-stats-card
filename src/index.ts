@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import BottomPanel from './routes/bottom';
 
+
 dotenv.config();
 
 const app = express();
@@ -16,7 +17,9 @@ const main = (req: Request, res: Response) => {
 app.get('/', main);
 app.get('/api', main);
 app.get('/api/:username', bottom.handle.bind(bottom));
+app.get('*', main); // Respond to 404 with the same page
 
 app.listen(port, () => {
+  console.log(`Mode: ${process.env.NODE_ENV}`);
   console.log(`Running on http://localhost:${port}`);
 });

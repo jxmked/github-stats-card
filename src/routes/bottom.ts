@@ -10,6 +10,7 @@ export default class Bottom {
   private parsed: ReturnType<typeof Template>;
   private userid: number;
   private generatedStats: IRankParams;
+  private isDev: boolean;
 
   constructor() {
     this.parsed = Template(bottom);
@@ -24,6 +25,9 @@ export default class Bottom {
       issues: 0,
       stargazers: 0
     };
+    
+    
+    this.isDev = process.env.NODE_ENV === 'development';
   }
 
   async validateAccount(fetcher: Fetcher): Promise<boolean> {
@@ -161,18 +165,26 @@ export default class Bottom {
       }
     }
 
-    const highestCommit = Math.max(...commitPerDays);
-    const xDiff = graph.width / commitPerDays.length;
-    const scale = graph.height / highestCommit;
-    const graphData = commitPerDays
-      .map((num: number, count: number) => {
-        const attr = count === 0 ? 'M' : 'L';
-        return `${attr} ${(graph.sx + xDiff * (count + 1)).toFixed(2)} ${(
-          graph.sy +
-          num * scale
-        ).toFixed(2)}`;
-      })
-      .join(' ');
+    let highestCommit: number = Math.max(...commitPerDays);
+    let graphData: string = 'M0 0h720';
+    /**
+     * Rouding up
+     * */
+    if (highestCommit !== 0) {
+      highestCommit = Math.ceil(highestCommit / 10) * 10;
+
+      const xDiff = graph.width / commitPerDays.length;
+      const scale = graph.height / highestCommit;
+      graphData = commitPerDays
+        .map((num: number, count: number) => {
+          const attr = count === 0 ? 'M' : 'L';
+          return `${attr} ${(graph.sx + xDiff * count).toFixed(2)} ${(
+            graph.sy +
+            num * scale
+          ).toFixed(2)}`;
+        })
+        .join(' ');
+    }
 
     return {
       graph: graphData,
@@ -222,15 +234,13 @@ export default class Bottom {
     const fObject = new Fetcher({ username });
     const isValidAccount = await this.validateAccount(fObject);
 
-    const cacheSeconds = 60 * 60 * 12; // 12 hours in seconds
-    const staleWhileRevalidateSeconds = 60 * 60 * 24; // 1 day in seconds
+    const cacheSeconds = this.isDev ? 0 : 60 * 60 * 12; // 12 hours in seconds
+    const staleWhileRevalidateSeconds = this.isDev ? 0 : 60 * 60 * 24; // 1 day in seconds
 
     res.setHeader('Content-Type', 'image/svg+xml');
     res.setHeader(
       'Cache-Control',
-      `max-age=${cacheSeconds},${' '
-      }s-maxage=${cacheSeconds},${''
-      }stale-while-revalidate=${staleWhileRevalidateSeconds}`
+      `max-age=${cacheSeconds},${' '}s-maxage=${cacheSeconds},${''}stale-while-revalidate=${staleWhileRevalidateSeconds}`
     );
 
     if (!isValidAccount) {
