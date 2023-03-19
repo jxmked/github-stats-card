@@ -2,7 +2,6 @@ import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import BottomPanel from './routes/bottom';
 
-
 dotenv.config();
 
 const app = express();

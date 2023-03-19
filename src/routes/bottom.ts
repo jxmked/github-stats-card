@@ -25,8 +25,7 @@ export default class Bottom {
       issues: 0,
       stargazers: 0
     };
-    
-    
+
     this.isDev = process.env.NODE_ENV === 'development';
   }
 
