@@ -20,5 +20,6 @@ app.get('*', main); // Respond to 404 with the same page
 
 app.listen(port, () => {
   console.log(`Mode: ${process.env.NODE_ENV}`);
+  console.log(`Serving ${process.env.MODE === 'offline' ? 'sample' : 'live'} data`);
   console.log(`Running on http://localhost:${port}`);
 });

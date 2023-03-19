@@ -1,6 +1,7 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
 import { ERROR_CODE } from '../error-constants';
+import sampleDataFetcher from '../scripts/generate-sample-data';
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ export enum BASE_API_URL {
 export default class Fetcher {
   private readonly repoFirstCount = 100; /** MAX Possible request **/
   private readonly REGISTERED_TOKEN = new Set<string>();
+  private workOffline: boolean;
 
   constructor(private readonly props: IFetcherConstructor) {
     /**
@@ -41,11 +43,17 @@ export default class Fetcher {
 
       this.REGISTERED_TOKEN.add(tk);
     } while (true);
+
+    this.workOffline = process.env.MODE === 'offline';
   }
 
   private get repoGraphQLStructure(): string {
     return `
-      repositories(first: ${this.repoFirstCount}, ownerAffiliations: OWNER, orderBy: {direction: DESC, field: STARGAZERS}, after: $AFTER) {
+      repositories(first: ${this.repoFirstCount}, 
+        ownerAffiliations: OWNER,
+        orderBy: {direction: DESC, field: STARGAZERS},
+        after: $AFTER) {
+        
         totalCount
         nodes {
           name
@@ -122,7 +130,9 @@ export default class Fetcher {
               }
             }
           }
-          repositoriesContributedTo(first: 1, contributionTypes: [COMMIT, ISSUE, PULL_REQUEST, REPOSITORY]) {
+          repositoriesContributedTo(
+            first: 1, 
+            contributionTypes: [COMMIT, ISSUE, PULL_REQUEST, REPOSITORY]) {
             totalCount
           }
           pullRequests(first: 1) {
@@ -163,6 +173,10 @@ export default class Fetcher {
     let hasBeenSet: boolean = false;
     const records = {};
     const repos = [];
+
+    if (this.workOffline) {
+      return sampleDataFetcher.data<IGraphQLResponse>('stats');
+    }
 
     do {
       const tries = await this.retry({
@@ -233,6 +247,10 @@ export default class Fetcher {
       url: `${BASE_API_URL.REST}/${this.props.username}`,
       method: 'GET'
     } satisfies IRetryRequestInfo;
+
+    if (this.workOffline) {
+      return sampleDataFetcher.data<IGithubRestApiUserInfo>('info');
+    }
 
     const retries = await this.retry(request);
 

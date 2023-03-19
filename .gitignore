@@ -102,3 +102,7 @@ dist
 
 # TernJS port file
 .tern-port
+
+
+## Sample data should be generate when  needed
+sample-data/*
