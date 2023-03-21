@@ -13,19 +13,18 @@
  PRE-CONTENT
  
  
- :VALUE:
+ :VALUES:
  OUTLINE-COLOR
  BACKGROUND-COLOR
  TITLE-UNDERLINE-COLOR
-
-
-
+ WIDTH
+ HEIGHT
 -->
 
 
 
 
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1555 856" id="main-card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1555 856" width="<%= WIDTH %>" height="<%= HEIGHT %>">
   <path d="M 0 0 h 1555 v 856 H 0 Z" fill="none" stroke="none" />
 
   <!-- Background cover -->
