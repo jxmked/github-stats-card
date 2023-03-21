@@ -40,7 +40,7 @@
     <circle cx="935" cy="164" r="8" fill="none" stroke="rgb(167,202,224)" stroke-width="8" />
   </g>
   <g>
-    <!-- Title Div -->
+    <!-- Title underline -->
     <path d="M 917 198 H 265" stroke="rgb(174, 174, 178)" fill="none" stroke-width="3" stroke-dasharray="20, 5" />
   </g>
   <g>
