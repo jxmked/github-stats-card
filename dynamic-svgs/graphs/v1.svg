@@ -1,0 +1,35 @@
+<!--
+
+
+
+
+-->
+
+
+<svg>
+    <!-- J f M A M J J A S O N D -->
+    <path d="M 240 530 V 720 H 930" fill="none" stroke="rgb(167, 202, 224)" stroke-width="5" />
+
+    <path d="M 240 555 H 920" fill="none" stroke="rgb(167, 202, 224)" stroke-width="3" stroke-dasharray="10, 5" />
+    <path d="M 240 595 H 920" fill="none" stroke="rgb(167, 202, 224)" stroke-width="3" stroke-dasharray="5, 8" />
+    <path d="M 240 635 H 920" fill="none" stroke="rgb(167, 202, 224)" stroke-width="3" stroke-dasharray="10, 5" />
+    <path d="M 240 682 H 920" fill="none" stroke="rgb(167, 202, 224)" stroke-width="3" stroke-dasharray="5, 8" />
+
+    <text x="230" y="560" fill="rgb(167, 202, 224)" font-size="35" text-anchor="end" font-family="monospace"><%= CHART_FULL_GRAPH %></text>
+    <text x="230" y="640" fill="rgb(167, 202, 224)" font-size="35" text-anchor="end" font-family="monospace"><%= CHART_HALF_GRAPH%></text>
+    <text x="230" y="720" fill="rgb(167, 202, 224)" font-size="35" text-anchor="end" font-family="monospace">0</text>
+
+    <g>
+      <text x="330" y="760" text-anchor="middle" font-family="monospace" font-size="30" fill="rgb(167, 202, 224)"><%= CHART_RECORD_HITS %></text>
+      <text x="930" y="760" text-anchor="end" font-family="monospace" font-size="30" fill="rgb(167, 202, 224)"><%= COMMIT-TYPE %></text>
+
+      <path
+        d="<%= GRAPH-DATA %>"
+        fill="none"
+        stroke-width="2"
+        stroke="white"
+        />
+    </g>
+  </g>
+  
+</svg>
