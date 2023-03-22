@@ -11,7 +11,6 @@ import { SVGGetter } from '../../lib/dynamic-svg-getter';
  * 
  * */
 
-
 export interface IBasicGraph {
   backgroundColor: string;
   textColor: string;
@@ -21,14 +20,18 @@ export default abstract class AbstractGraph<T extends IBasicGraph> {
   protected position: ICoordinate;
   protected dimension: IDimension;
 
-  public props: T;
+  public props: Partial<T>;
   protected records: number[];
 
   protected abstract readonly svgPath: string;
   protected svgTemplate: ReturnType<typeof Template> | null;
 
   constructor() {
-    this.props = {} as T;
+    this.props = {
+      backgroundColor: "",
+      textColor: ""
+    } as T;
+    
     this.records = [];
     this.position = { x: 0, y: 0 };
     this.dimension = {

@@ -6,10 +6,6 @@ import Fetcher from '../model/fetcher';
 import { calculateRank, IRankParams, formatNumber } from '../utils';
 import { BaseError } from './templates/svgs';
 
-import { SVGGetter } from '../lib/dynamic-svg-getter';
-
-const REACTOR = SVGGetter('starship-avalon/core');
-
 export default class Bottom {
   private parsed: ReturnType<typeof Template>;
   private userid: number;
@@ -128,7 +124,6 @@ export default class Bottom {
       AFTER_CONTENT: Template(Error_Banner)({
         ERROR_CONTENT: 'INVALID REQUEST'
       }),
-      REACTOR: REACTOR
     });
 
     try {
@@ -276,7 +271,6 @@ export default class Bottom {
       STATS_RECORD: statsData.join(''),
       GRAPH_DATA: graphData.graph,
       AFTER_CONTENT: '',
-      REACTOR: REACTOR
     });
 
     res.send(compiled);
