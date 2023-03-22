@@ -43,11 +43,6 @@
     <!-- Title underline -->
     <path d="M 917 198 H 265" stroke="rgb(174, 174, 178)" fill="none" stroke-width="3" stroke-dasharray="20, 5" />
   </g>
-  <g>
-    <!--  Reactor Section -->
-    <%= REACTOR %>
-  </g>
-
   <g transform="translate(0, -25)">
 
   <g>
@@ -62,6 +57,5 @@
     <!-- 35 Chars -->
     <%= STATS_RECORD %>
   </g>
-  <%= PRE-CONTENT %>
   <%= POST-CONTENT %>
 </svg>

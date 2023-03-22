@@ -6,10 +6,9 @@ import Fetcher from '../model/fetcher';
 import { calculateRank, IRankParams, formatNumber } from '../utils';
 import { BaseError } from './templates/svgs';
 
-
 import { SVGGetter } from '../lib/dynamic-svg-getter';
 
-const REACTOR = SVGGetter("starship-avalon/core");
+const REACTOR = SVGGetter('starship-avalon/core');
 
 export default class Bottom {
   private parsed: ReturnType<typeof Template>;
@@ -279,15 +278,15 @@ export default class Bottom {
       AFTER_CONTENT: '',
       REACTOR: REACTOR
     });
-    
-    res.send(compiled)
+
+    res.send(compiled);
     return;
     try {
       res.send(optimize(compiled).data);
     } catch (err) {
       res.send(BaseError);
-      
-      console.log(err)
+
+      console.log(err);
     }
   }
 }

@@ -1,4 +1,7 @@
 <!--
+ STYLE - DEFAULT
+ 
+ 
   :VARIABLES:
   BASE-OUTLINE-COLOR
   HARD-DASH-ARRAY-COLOR
@@ -6,33 +9,35 @@
   GRAPH-VALUES-COLOR
   GRAPH-LABEL-COLOR
   GRAPH-LINE-COLOR
+  
+  WIDTH
+  HEIGHT
 
-
-
+ - Keep the aspect ratio: 1:3.136
 -->
 
 <!--
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 690 190" width="<%= WIDTH %>" height="<%= HEIGHT %>">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 690 190">
 -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 690 220">
 
   <!-- Base outline -->
-  <path d="M90 0V 190 H 690" fill="none" stroke="rgb(167, 202, 224)" stroke-width="5" />
+  <path d="M90 0V 190 H 690" fill="none" stroke="<%= BASE-OUTLINE-COLOR %>" stroke-width="5" />
   
   <!-- Graph outline -->
-  <path d="M 90 44 H 685" fill="none" stroke="rgb(167, 202, 224)" stroke-width="3" stroke-dasharray="10, 5" />
-  <path d="M 90 88 H 685" fill="none" stroke="rgb(167, 202, 224)" stroke-width="3" stroke-dasharray="5, 8" />
-  <path d="M 90 132 H 685" fill="none" stroke="rgb(167, 202, 224)" stroke-width="3" stroke-dasharray="10, 5" />
-  <path d="M 90 152 H 685" fill="none" stroke="rgb(167, 202, 224)" stroke-width="3" stroke-dasharray="5, 8" />
+  <path d="M 90 44 H 685" fill="none" stroke="<%= HARD-DASH-ARRAY-COLOR %>" stroke-width="3" stroke-dasharray="10, 5" />
+  <path d="M 90 88 H 685" fill="none" stroke="<%= SOFT-DASH-ARRAY-COLOR %>" stroke-width="3" stroke-dasharray="5, 8" />
+  <path d="M 90 132 H 685" fill="none" stroke="<%= HARD-DASH-ARRAY-COLOR %>" stroke-width="3" stroke-dasharray="10, 5" />
+  <path d="M 90 152 H 685" fill="none" stroke="<%= SOFT-DASH-ARRAY-COLOR %>" stroke-width="3" stroke-dasharray="5, 8" />
   
   <!-- Graph Values -->
   <g >
-  <text x="88" y="50" fill="rgb(167, 202, 224)" font-size="35" text-anchor="end" font-family="monospace">%= CHART_FULL_GRAPH %></text>
-  <text x="88" y="126" fill="rgb(167, 202, 224)" font-size="35" text-anchor="end" font-family="monospace">%= CHART_HALF_GRAPH%></text>
+  <text x="88" y="50" fill="rgb(167, 202, 224)" font-size="35" text-anchor="end" font-family="monospace"><%= CHART_FULL_GRAPH %></text>
+  <text x="88" y="126" fill="rgb(167, 202, 224)" font-size="35" text-anchor="end" font-family="monospace"><%= CHART_HALF_GRAPH%></text>
   </g>
   <g>
-    <text x="330" y="760" text-anchor="middle" font-family="monospace" font-size="30" fill="rgb(167, 202, 224)">%= CHART_RECORD_HITS %></text>
-    <text x="930" y="760" text-anchor="end" font-family="monospace" font-size="30" fill="rgb(167, 202, 224)">%= COMMIT-TYPE %></text>
+    <text x="330" y="760" text-anchor="middle" font-family="monospace" font-size="30" fill="rgb(167, 202, 224)"><%= CHART_RECORD_HITS %></text>
+    <text x="930" y="760" text-anchor="end" font-family="monospace" font-size="30" fill="rgb(167, 202, 224)"><%= COMMIT-TYPE %></text>
 
   <!--  <path
       d="<%= GRAPH-DATA %>"

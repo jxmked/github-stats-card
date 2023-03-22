@@ -1,13 +1,36 @@
-import fs from 'fs'
-import path from 'path'
+import fs from 'fs';
+import path from 'path';
 
-
-const folderName = 'data';
-const dir = path.resolve(path.join(__dirname, '..', '..', folderName));
 /**
  * Fetching info from data folder
+ *
+ * The json must be a constant and cannot be altered
  * */
 
+export type IJSONData = object;
+
 export default class Data {
-  constructor(name)
+  private readonly pathToData = path.resolve(path.join(__dirname, '..', '..', 'data'));
+  private jsonData: IJSONData;
+
+  constructor(name: string) {
+    this.jsonData = {};
+
+    this.parseJson(name);
+  }
+
+  public getData<T>(key: keyof IJSONData): T {
+    return this.jsonData[key] as T;
+  }
+
+  private parseJson(name: string): void {
+    const absPath = path.join(this.pathToData, name);
+
+    try {
+      const json = fs.readFileSync(this.pathToData, 'utf8');
+      this.jsonData = JSON.parse(json);
+    } catch (err) {
+      throw new Error(`Error while parsing ${absPath} file`);
+    }
+  }
 }
