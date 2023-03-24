@@ -26,6 +26,7 @@ export interface IConstructorArgs {
 }
 
 export class MissingTemplateValues extends TypeError {}
+export class RederingUndefinedTemplate extends TypeError {}
 
 export default abstract class AbstractGraph<T extends IBasicGraph> {
   protected position: ICoordinate;

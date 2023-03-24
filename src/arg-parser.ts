@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 
+import graphs from './dynamic-svgs/graphs';
+
 export default class ArgParser {
   protected username: string | undefined;
   protected styles: string | undefined;

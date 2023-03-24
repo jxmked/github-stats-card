@@ -1,4 +1,4 @@
-import ParentClass, { IBasicGraph } from './__abstraction';
+import ParentClass, { IBasicGraph, RederingUndefinedTemplate } from './__abstraction';
 
 /**
  * Style - Default value
@@ -33,17 +33,26 @@ export default class V1 extends ParentClass<IProps> {
   protected readonly TEMPLATE_PAIR = {
     hardLineColor: 'HARD-DASH-ARRAY-COLOR',
     softLineColor: 'SOFT-DASH-ARRAY-COLOR',
-    baseTextColor: 'BASE-TEXT-COLOR'
+    baseTextColor: 'BASE-TEXT-COLOR',
+    commitType: 'COMMIT-TYPE',
+    baseOutline: 'BASE-OUTLINE-COLOR',
+    maxGraphValue: 'CHART_FULL_GRAPH',
+    halfGraphValue: 'CHART_HALF_GRAPH',
+    recordRange: 'CHART_FULL_GRAPH'
   };
 
   protected propsInitializer(): void {
-    this.props.hardLineColor = '';
-    this.props.softLineColor = '';
+    this.props.hardLineColor = '#ff0000';
+    this.props.softLineColor = '#fff000';
 
     this.props.baseTextColor = 'rgb(167, 202, 224)';
   }
 
   public render(): string {
-    return '';
+    if (typeof this.svgTemplate !== void 0 && this.svgTemplate !== null) {
+      return this.svgTemplate(this.TEMPLATE_PAIR);
+    }
+
+    throw new RederingUndefinedTemplate('Failed to render. Template is not set');
   }
 }
