@@ -32,12 +32,12 @@
   
   <!-- Graph Values -->
   <g >
-  <text x="88" y="50" fill="rgb(167, 202, 224)" font-size="35" text-anchor="end" font-family="monospace"><%= CHART_FULL_GRAPH %></text>
-  <text x="88" y="126" fill="rgb(167, 202, 224)" font-size="35" text-anchor="end" font-family="monospace"><%= CHART_HALF_GRAPH%></text>
+  <text x="88" y="50" fill="<%= BASE-TEXT-COLOR %>" font-size="35" text-anchor="end" font-family="monospace"><%= CHART_FULL_GRAPH %></text>
+  <text x="88" y="126" fill="<%= BASE-TEXT-COLOR %>" font-size="35" text-anchor="end" font-family="monospace"><%= CHART_HALF_GRAPH%></text>
   </g>
   <g>
-    <text x="330" y="760" text-anchor="middle" font-family="monospace" font-size="30" fill="rgb(167, 202, 224)"><%= CHART_RECORD_HITS %></text>
-    <text x="930" y="760" text-anchor="end" font-family="monospace" font-size="30" fill="rgb(167, 202, 224)"><%= COMMIT-TYPE %></text>
+    <text x="330" y="760" text-anchor="middle" font-family="monospace" font-size="30" fill="<%= BASE-TEXT-COLOR %>"><%= CHART_RECORD_HITS %></text>
+    <text x="930" y="760" text-anchor="end" font-family="monospace" font-size="30" fill="<%= BASE-TEXT-COLOR %>"><%= COMMIT-TYPE %></text>
 
   <!--  <path
       d="<%= GRAPH-DATA %>"

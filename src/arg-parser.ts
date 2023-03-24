@@ -20,6 +20,7 @@ export default class ArgParser {
   protected parseStyles(): void {}
 
   public handleQueryRequest(req: Request, res: Response): void {
+    // Passing: username
     Object.assign(this, req.params);
 
     const { theme } = req.query;
@@ -32,6 +33,8 @@ export default class ArgParser {
      * if both theme and params.design is present,
      * theme will be ignored
      * */
+
+    // Passing: design, username
     Object.assign(this, req.params);
 
     if (!this.validateUser()) {

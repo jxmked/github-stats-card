@@ -16,6 +16,17 @@ export interface IBasicGraph {
   textColor: string;
 }
 
+/**
+ * The plan is, pass all data into constructor then let the
+ * object to get all it needs
+ * */
+export interface IConstructorArgs {
+  level1Data: IGithubRestApiUserInfo;
+  level2Data: IGraphQLResponse;
+}
+
+export class MissingTemplateValues extends TypeError {}
+
 export default abstract class AbstractGraph<T extends IBasicGraph> {
   protected position: ICoordinate;
   protected dimension: IDimension;
@@ -26,11 +37,11 @@ export default abstract class AbstractGraph<T extends IBasicGraph> {
   protected abstract readonly svgPath: string;
   protected svgTemplate: ReturnType<typeof Template> | null;
 
-  constructor() {
-    this.props = {
-      backgroundColor: '',
-      textColor: ''
-    } as T;
+  protected abstract readonly TEMPLATE_PAIR: Record<string, string>;
+  protected dataParams: Partial<IConstructorArgs>;
+
+  constructor(dataParams: IConstructorArgs) {
+    this.props = {} as T;
 
     this.records = [];
     this.position = { x: 0, y: 0 };
@@ -41,6 +52,11 @@ export default abstract class AbstractGraph<T extends IBasicGraph> {
 
     this.svgTemplate = null;
     this.loadParseSVG();
+
+    this.dataParams = {};
+    Object.assign(this.dataParams, dataParams);
+
+    this.propsInitializer();
   }
 
   private loadParseSVG(): void {
@@ -53,6 +69,11 @@ export default abstract class AbstractGraph<T extends IBasicGraph> {
   }
 
   public abstract render(): string;
+
+  /**
+   * Automatically call after the constructor has been initialize
+   * */
+  protected abstract propsInitializer(): void;
 
   public move({ x, y }: ICoordinate): void {
     this.position = { x, y };
