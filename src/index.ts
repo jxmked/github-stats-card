@@ -5,19 +5,17 @@ import ArgParser from './arg-parser';
 dotenv.config();
 
 const argp = new ArgParser();
-const evt = argp.handleEvent.bind(argp)
 
 const app = express();
 const port = process.env.port ?? 9000;
-
 
 const main = (req: Request, res: Response) => {
   res.send('Visit <a href="https://github.com/jxmked">Jovan\'s Github Account</a>');
 };
 
 app.get('/', main);
-app.get('/api/:username', evt);
-app.get('/api/:username/:styles', evt);
+app.get('/api/:username', argp.handleQueryRequest.bind(argp));
+app.get('/api/:username/:design', argp.handleParamRequest.bind(argp));
 
 app.get('*', main); // Response to the rest with default homepage
 

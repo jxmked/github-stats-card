@@ -153,6 +153,11 @@ export default class Fetcher {
     `;
   }
 
+  /**
+   * If one token gets consumed or expired
+   * try the other for possible availability.
+   * If none, just exhaust the function.
+   * */
   private async *retry(reqInfo: IRetryRequestInfo) {
     const request = Object.assign({}, reqInfo, {
       headers: {

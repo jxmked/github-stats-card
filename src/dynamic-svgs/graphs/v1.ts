@@ -10,19 +10,16 @@ export interface IProps extends IBasicGraph {
 }
 
 export default class V1 extends ParentClass<IProps> {
-  
-  
-  protected readonly svgPath = "graphs/v1"
-  
+  protected readonly svgPath = 'graphs/v1';
+
   constructor() {
     super();
-    
-    
-    this.props.hardLineColor = ""
-    this.props.softLineColor = ""
+
+    this.props.hardLineColor = '';
+    this.props.softLineColor = '';
   }
-  
+
   public render(): string {
-    return ""
+    return '';
   }
 }

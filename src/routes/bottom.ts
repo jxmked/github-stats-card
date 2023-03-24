@@ -123,7 +123,7 @@ export default class Bottom {
       GRAPH_DATA: 'M0 0H720',
       AFTER_CONTENT: Template(Error_Banner)({
         ERROR_CONTENT: 'INVALID REQUEST'
-      }),
+      })
     });
 
     try {
@@ -270,7 +270,7 @@ export default class Bottom {
       CORE_PANEL_H: '',
       STATS_RECORD: statsData.join(''),
       GRAPH_DATA: graphData.graph,
-      AFTER_CONTENT: '',
+      AFTER_CONTENT: ''
     });
 
     res.send(compiled);

@@ -5,10 +5,10 @@ import { SVGGetter } from '../../lib/dynamic-svg-getter';
  * The plan is to all child class of this will
  * provide 'svgPath' from '(./dynamic-svgs)'
  * and render method
- * 
- * after providing, 
- * 
- * 
+ *
+ * after providing,
+ *
+ *
  * */
 
 export interface IBasicGraph {
@@ -28,10 +28,10 @@ export default abstract class AbstractGraph<T extends IBasicGraph> {
 
   constructor() {
     this.props = {
-      backgroundColor: "",
-      textColor: ""
+      backgroundColor: '',
+      textColor: ''
     } as T;
-    
+
     this.records = [];
     this.position = { x: 0, y: 0 };
     this.dimension = {
