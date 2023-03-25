@@ -1,4 +1,8 @@
-import ParentClass, { IBasicGraph, RederingUndefinedTemplate } from './__abstraction';
+import ParentClass, { 
+  IBasicGraph, 
+  E_RederingUndefinedTemplate
+  
+} from './__abstraction';
 
 /**
  * Style - Default value
@@ -53,6 +57,6 @@ export default class V1 extends ParentClass<IProps> {
       return this.svgTemplate(this.TEMPLATE_PAIR);
     }
 
-    throw new RederingUndefinedTemplate('Failed to render. Template is not set');
+    throw new E_RederingUndefinedTemplate('Failed to render. Template is not set');
   }
 }

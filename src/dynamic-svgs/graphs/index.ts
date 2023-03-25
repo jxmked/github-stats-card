@@ -1,11 +1,11 @@
 import DefaultDesign from './v1';
-import AbstractObject, { IConstructorArgs } from './__abstraction';
+import AbstractObject, { IConstructorArgs, IFuck } from './__abstraction';
 
 export type IGraphUninitializeObject = new (
   dataParams: IConstructorArgs
-) => typeof AbstractObject;
+) => IFuck;
 
-const des: IGraphUninitializeObject = {
+const des= {
   DefaultDesign
 };
 

@@ -25,10 +25,10 @@ export interface IConstructorArgs {
   level2Data: IGraphQLResponse;
 }
 
-export class MissingTemplateValues extends TypeError {}
-export class RederingUndefinedTemplate extends TypeError {}
+export class E_MissingTemplateValues extends TypeError {}
+export class E_RederingUndefinedTemplate extends TypeError {}
 
-export default abstract class AbstractGraph<T extends IBasicGraph> {
+export default abstract class AbstractGraph<T extends IBasicGraph>implements IFuck {
   protected position: ICoordinate;
   protected dimension: IDimension;
 
@@ -83,4 +83,19 @@ export default abstract class AbstractGraph<T extends IBasicGraph> {
   public resize({ width, height }: IDimension): void {
     this.dimension = { width, height };
   }
+}
+
+
+/**
+ * I tried to use the abstract class to pass uninitialize 
+ * class object into variable but it gets complicated
+ * 
+ * So, i decided to create an interface that needed to implemented
+ * 
+ * 
+ * */
+ 
+ 
+export interface IFuck {
+  
 }
