@@ -26,9 +26,9 @@ export interface IConstructorArgs {
 }
 
 export class E_MissingTemplateValues extends TypeError {}
-export class E_RederingUndefinedTemplate extends TypeError {}
+export class E_RenderingUndefinedTemplate extends TypeError {}
 
-export default abstract class AbstractGraph<T extends IBasicGraph>implements IFuck {
+export default abstract class AbstractGraph<T extends IBasicGraph> {
   protected position: ICoordinate;
   protected dimension: IDimension;
 
@@ -83,19 +83,19 @@ export default abstract class AbstractGraph<T extends IBasicGraph>implements IFu
   public resize({ width, height }: IDimension): void {
     this.dimension = { width, height };
   }
-}
 
+  protected generateValues(): void {
+    const propKeys = Object.keys(this.TEMPLATE_PAIR);
 
-/**
- * I tried to use the abstract class to pass uninitialize 
- * class object into variable but it gets complicated
- * 
- * So, i decided to create an interface that needed to implemented
- * 
- * 
- * */
- 
- 
-export interface IFuck {
-  
+    const values = propKeys.map((propKey:string) => {
+      try {
+        const value = this.props[propKey];
+
+        
+        
+      } catch(err) {
+        throw new Error("")
+      }
+    })
+  }
 }

@@ -1,12 +1,15 @@
-import DefaultDesign from './v1';
-import AbstractObject, { IConstructorArgs, IFuck } from './__abstraction';
+import V1 from './v1';
+import ParentClass, { IConstructorArgs } from './__abstraction';
 
 export type IGraphUninitializeObject = new (
   dataParams: IConstructorArgs
-) => IFuck;
+) => ParentClass<any>;
 
-const des= {
-  DefaultDesign
-};
 
-export default des;
+const graphList = new Map<string, IGraphUninitializeObject>();
+
+
+graphList.set("Default",V1);
+
+
+export default graphList;
