@@ -52,11 +52,4 @@ export default class V1 extends ParentClass<IProps> {
     this.props.baseTextColor = 'rgb(167, 202, 224)';
   }
 
-  public render(): string {
-    if (typeof this.svgTemplate !== void 0 && this.svgTemplate !== null) {
-      return this.svgTemplate(this.TEMPLATE_PAIR);
-    }
-
-    throw new E_RenderingUndefinedTemplate('Failed to render. Template is not set');
-  }
 }

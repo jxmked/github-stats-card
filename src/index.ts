@@ -2,6 +2,9 @@ import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import ArgParser from './arg-parser';
 
+import sourcemapSupport from 'source-map-support';
+sourcemapSupport.install()
+
 dotenv.config();
 
 const argp = new ArgParser();

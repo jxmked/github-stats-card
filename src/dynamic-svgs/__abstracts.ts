@@ -1,5 +1,5 @@
 import Template from 'lodash/template.js';
-import { SVGGetter } from '../../lib/dynamic-svg-getter';
+import { SVGGetter } from '../lib/dynamic-svg-getter';
 
 /**
  * The plan is to all child class of this will
@@ -11,9 +11,10 @@ import { SVGGetter } from '../../lib/dynamic-svg-getter';
  *
  * */
 
-export interface IBasicGraph {
+export interface IBasicProps {
   backgroundColor: string;
   textColor: string;
+  outlineColor: string;
 }
 
 /**
@@ -28,13 +29,12 @@ export interface IConstructorArgs {
 export class E_MissingTemplateValues extends TypeError {}
 export class E_RenderingUndefinedTemplate extends TypeError {}
 
-export default abstract class AbstractGraph<T extends IBasicGraph> {
+export default abstract class BaseAbstractObject<T extends IBasicProps> {
   protected position: ICoordinate;
   protected dimension: IDimension;
 
   public props: Partial<T>;
-  protected records: number[];
-
+ 
   protected abstract readonly svgPath: string;
   protected svgTemplate: ReturnType<typeof Template> | null;
 
@@ -44,7 +44,6 @@ export default abstract class AbstractGraph<T extends IBasicGraph> {
   constructor(dataParams: IConstructorArgs) {
     this.props = {} as T;
 
-    this.records = [];
     this.position = { x: 0, y: 0 };
     this.dimension = {
       width: 0,
@@ -65,12 +64,13 @@ export default abstract class AbstractGraph<T extends IBasicGraph> {
     this.svgTemplate = Template(file);
   }
 
-  public data(records: number[]): void {
-    this.records = records;
+  public render(): string {
+    if (typeof this.svgTemplate !== void 0 && this.svgTemplate !== null) {
+      return this.svgTemplate(this.TEMPLATE_PAIR);
+    }
+
+    throw new E_RenderingUndefinedTemplate('Failed to render. Template is not set');
   }
-
-  public abstract render(): string;
-
   /**
    * Automatically call after the constructor has been initialize
    * */
@@ -87,16 +87,26 @@ export default abstract class AbstractGraph<T extends IBasicGraph> {
   protected generateValues(): void {
     const propKeys = Object.keys(this.TEMPLATE_PAIR);
 
-    const values = propKeys.map((propKey) => {
+    const paired = Object.fromEntries(propKeys.map((propKey) => {
       try {
         const value = this.props[propKey as keyof typeof this.props];
+        
         if(typeof value === void 0 || value === void 0) {
-          throw new Error(`Key ${propKey} has no value`)
+          throw new E_MissingTemplateValues(`Key ${propKey} has no value`)
         }
         
+        return [propKey, value];
       } catch(err) {
-     //   throw new E_MissingTemplateValues(err);
+        if(err instanceof E_MissingTemplateValues) throw err;
+        
+        throw new E_MissingTemplateValues("Invalid template key or value");
       }
-    })
+    }));
+    
+    
+    
+    
+    
+    
   }
 }
