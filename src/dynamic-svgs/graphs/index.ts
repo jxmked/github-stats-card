@@ -5,11 +5,8 @@ export type IGraphUninitializeObject = new (
   dataParams: IConstructorArgs
 ) => ParentClass<any>;
 
-
 const graphList = new Map<string, IGraphUninitializeObject>();
 
-
-graphList.set("Default",V1);
-
+graphList.set('Default', V1);
 
 export default graphList;

@@ -69,7 +69,7 @@ export default abstract class AbstractGraph<T extends IBasicGraph> {
     this.records = records;
   }
 
-  public abstract render(): string;
+  //public abstract render(): string;
 
   /**
    * Automatically call after the constructor has been initialize
@@ -90,13 +90,12 @@ export default abstract class AbstractGraph<T extends IBasicGraph> {
     const values = propKeys.map((propKey) => {
       try {
         const value = this.props[propKey as keyof typeof this.props];
-        if(typeof value === void 0 || value === void 0) {
-          throw new Error(`Key ${propKey} has no value`)
+        if (typeof value === void 0 || value === void 0) {
+          throw new Error(`Key ${propKey} has no value`);
         }
-        
-      } catch(err) {
-     //   throw new E_MissingTemplateValues(err);
+      } catch (err) {
+        //   throw new E_MissingTemplateValues(err);
       }
-    })
+    });
   }
 }

@@ -1,26 +1,12 @@
 import Template from 'lodash/template.js';
 import { SVGGetter } from '../lib/dynamic-svg-getter';
 
-/**
- * The plan is to all child class of this will
- * provide 'svgPath' from '(./dynamic-svgs)'
- * and render method
- *
- * after providing,
- *
- *
- * */
-
 export interface IBasicProps {
   backgroundColor: string;
   textColor: string;
   outlineColor: string;
 }
 
-/**
- * The plan is, pass all data into constructor then let the
- * object to get all it needs
- * */
 export interface IConstructorArgs {
   level1Data: IGithubRestApiUserInfo;
   level2Data: IGraphQLResponse;
@@ -28,13 +14,14 @@ export interface IConstructorArgs {
 
 export class E_MissingTemplateValues extends TypeError {}
 export class E_RenderingUndefinedTemplate extends TypeError {}
+export class E_TemplateValueError extends Error {}
 
 export default abstract class BaseAbstractObject<T extends IBasicProps> {
   protected position: ICoordinate;
   protected dimension: IDimension;
 
   public props: Partial<T>;
- 
+
   protected abstract readonly svgPath: string;
   protected svgTemplate: ReturnType<typeof Template> | null;
 
@@ -84,29 +71,27 @@ export default abstract class BaseAbstractObject<T extends IBasicProps> {
     this.dimension = { width, height };
   }
 
-  protected generateValues(): void {
-    const propKeys = Object.keys(this.TEMPLATE_PAIR);
+  protected generateValues(): T {
+    /**
+     * Check each values and validate and return it ready for
+     * lodash/template to process
+     * */
+    return Object.fromEntries(
+      Object.entries(this.TEMPLATE_PAIR).map(([propKey, templateKey]) => {
+        try {
+          const value = this.props[propKey as keyof typeof this.props];
 
-    const paired = Object.fromEntries(propKeys.map((propKey) => {
-      try {
-        const value = this.props[propKey as keyof typeof this.props];
-        
-        if(typeof value === void 0 || value === void 0) {
-          throw new E_MissingTemplateValues(`Key ${propKey} has no value`)
+          if (typeof value === void 0 || value === void 0) {
+            throw new E_MissingTemplateValues(`Key ${propKey} has no value`);
+          }
+
+          return [templateKey, value];
+        } catch (err) {
+          if (err instanceof E_MissingTemplateValues) throw err;
+
+          throw new E_TemplateValueError('Invalid template key or value');
         }
-        
-        return [propKey, value];
-      } catch(err) {
-        if(err instanceof E_MissingTemplateValues) throw err;
-        
-        throw new E_MissingTemplateValues("Invalid template key or value");
-      }
-    }));
-    
-    
-    
-    
-    
-    
+      })
+    ) as Required<T>;
   }
 }

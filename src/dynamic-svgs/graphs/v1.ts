@@ -1,8 +1,4 @@
-import ParentClass, { 
-  IBasicGraph, 
-  E_RenderingUndefinedTemplate
-  
-} from './__abstraction';
+import ParentClass, { IBasicGraph, E_RenderingUndefinedTemplate } from './__abstraction';
 
 /**
  * Style - Default value
@@ -51,5 +47,4 @@ export default class V1 extends ParentClass<IProps> {
 
     this.props.baseTextColor = 'rgb(167, 202, 224)';
   }
-
 }

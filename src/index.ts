@@ -3,7 +3,7 @@ import express, { Request, Response } from 'express';
 import ArgParser from './arg-parser';
 
 import sourcemapSupport from 'source-map-support';
-sourcemapSupport.install()
+sourcemapSupport.install();
 
 dotenv.config();
 
