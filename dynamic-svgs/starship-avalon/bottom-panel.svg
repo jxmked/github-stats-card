@@ -19,16 +19,19 @@
  TITLE-UNDERLINE-COLOR
  WIDTH
  HEIGHT
+ 
+ 
 -->
 
 
 
 
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1555 856" width="<%= WIDTH %>" height="<%= HEIGHT %>">
-  <path d="M 0 0 h 1555 v 856 H 0 Z" fill="none" stroke="none" />
-
   <!-- Background cover -->
-  <path d="M 80 50 H 1480 L 1510 90 V 780 Q 1512 780, 1500 800 H 60 Q 45 800, 45 785 V 85 Z" stroke="none" fill="rgba(68, 68, 70, 1)" />
+  <path 
+    d="M 80 50 H 1480 L 1510 90 V 780 Q 1512 780, 1500 800 H 60 Q 45 800, 45 785 V 85 Z" 
+    stroke="none" 
+    fill="rgba(68, 68, 70, 1)" />
 
   <g>
     <!-- outline-boundary -->
