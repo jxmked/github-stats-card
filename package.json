@@ -5,12 +5,12 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "NODE_ENV=production node dist/index.js",
+    "start": "node dist/index.js --prod",
     "dev": "tsc -p tsconfig.json -w",
-    "build": "NODE_ENV=production rimraf dist && tsc -p tsconfig.json --sourceMap false --noEmitOnError true --listFiles true --diagnostics true",
+    "build": "rimraf dist && tsc -p tsconfig.json --sourceMap false --noEmitOnError true --listFiles true --diagnostics true",
     "prettier-format": "prettier --config .prettierrc \"./src\" \"./types\" --write",
-    "serve": "NODE_ENV=development nodemon \"./dist/\" localhost 9000",
-    "serve:offline": "NODE_ENV=development MODE=offline nodemon \"./dist/\" localhost 9000",
+    "serve": "nodemon \"./dist/\" localhost 9000 --dev",
+    "serve:offline": "nodemon \"./dist/\" localhost 9000 --dev --offline",
     "generate-sample-data": "node dist/scripts/index need-sample-data"
   },
   "repository": {
