@@ -25,3 +25,4 @@ protected readonly svgPath = 'starship-avalon/bottom-panel';
     this.props.outlineColor = ""
   }
 }
+
