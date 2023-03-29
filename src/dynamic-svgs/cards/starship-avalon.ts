@@ -14,16 +14,13 @@ protected readonly svgPath = 'starship-avalon/bottom-panel';
     hardLineColor: 'HARD-DASH-ARRAY-COLOR',
     softLineColor: 'SOFT-DASH-ARRAY-COLOR',
     baseTextColor: 'BASE-TEXT-COLOR',
-    commitType: 'COMMIT-TYPE',
-    baseOutline: 'BASE-OUTLINE-COLOR',
-    maxGraphValue: 'CHART_FULL_GRAPH',
-    halfGraphValue: 'CHART_HALF_GRAPH',
-    recordRange: 'CHART_FULL_GRAPH'
+    width: 'WIDTH',
+    height: 'HEIGHT'
   };
 
   protected propsInitializer(): void {
     
-    this.props.backgroundColor = ""
+    this.props.backgroundColor = "rgba(68, 68, 70, 1)"
     this.props.textColor = ""
     this.props.outlineColor = ""
   }
