@@ -25,6 +25,14 @@ export enum BASE_API_URL {
   GRAPHQL = 'https://api.github.com/graphql'
 }
 
+export class E_SYNTAX_GRAPHQL extends TypeError {}
+export class E_EXHAUSTED_TOKEN extends Error {}
+
+export const enum WORD_DICT {
+  outOfToken = "All token has been exhausted",
+  graphqlSyntaxError = "There must be an error in GraphQL"
+}
+
 export default class Fetcher {
   private readonly repoFirstCount = 100; /** MAX Possible request **/
   private readonly REGISTERED_TOKEN = new Set<string>();
@@ -36,13 +44,13 @@ export default class Fetcher {
      * Save all Token into set
      * */
     let index: number = 0;
-    do {
+    while (true) {
       const tk = process.env[`AUTH_TOKEN_${++index}`];
 
       if (tk === void 0) break;
 
       this.REGISTERED_TOKEN.add(tk);
-    } while (true);
+    }
 
     this.workOffline = process.env.MODE === 'offline';
   }
@@ -200,7 +208,7 @@ export default class Fetcher {
         const tried = await tries.next();
 
         if (tried.done) {
-          throw new Error(`${ERROR_CODE.OUT_OF_TOKEN}`);
+          throw new E_EXHAUSTED_TOKEN(WORD_DICT.outOfToken);
         }
 
         const response = tried.value;
@@ -233,7 +241,7 @@ export default class Fetcher {
           }
           if (!hasBeenSet) Object.assign(records, data.data.user);
         } catch (err) {
-          throw new TypeError(`${ERROR_CODE.QUERY_ERROR}`);
+          throw new E_SYNTAX_GRAPHQL(WORD_DICT.graphqlSyntaxError);
         }
         break;
       } while (true);
@@ -263,7 +271,7 @@ export default class Fetcher {
       const tried = await retries.next();
 
       if (tried.done) {
-        throw new Error(`${ERROR_CODE.OUT_OF_TOKEN}`);
+        throw new E_EXHAUSTED_TOKEN(WORD_DICT.outOfToken);
       }
 
       const response = tried.value;

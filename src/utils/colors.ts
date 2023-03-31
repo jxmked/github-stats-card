@@ -20,10 +20,10 @@ export function Colors<T>(arg: IColorArgs): IColorReturnType<T>{
 
 
 
-const s : number = Colors("8384") */
+const s : number = Colors("8384") 
 
 
-/* 
+
 class Colors {
   private valueType : string;
   private value: IRGBA;
