@@ -1,8 +1,1 @@
-
-
-
-export interface IBaseCardObject {
-  
-  
-}
-
+export interface IBaseCardObject {}

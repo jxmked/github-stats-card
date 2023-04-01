@@ -58,7 +58,7 @@ export default abstract class BaseAbstractObject<T extends IBasicProps> {
 
     throw new E_RenderingUndefinedTemplate('Failed to render. Template is not set');
   }
-  
+
   public move({ x, y }: ICoordinate): void {
     this.position = { x, y };
   }
@@ -90,10 +90,9 @@ export default abstract class BaseAbstractObject<T extends IBasicProps> {
       })
     ) as Required<T>;
   }
-  
+
   /**
    * Automatically call after the constructor has been initialize
    * */
   protected abstract propsInitializer(): void;
-
 }

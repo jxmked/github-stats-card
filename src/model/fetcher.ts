@@ -27,10 +27,12 @@ export enum BASE_API_URL {
 
 export class E_SYNTAX_GRAPHQL extends TypeError {}
 export class E_EXHAUSTED_TOKEN extends Error {}
+export class E_NO_AVAIL_TOKEN extends TypeError {}
 
-export const enum WORD_DICT {
-  outOfToken = "All token has been exhausted",
-  graphqlSyntaxError = "There must be an error in GraphQL"
+export enum WORD_DICT {
+  outOfToken = 'All token has been exhausted',
+  graphqlSyntaxError = 'There must be an error in GraphQL',
+  noAvailableToken = 'No available token'
 }
 
 export default class Fetcher {
@@ -50,6 +52,10 @@ export default class Fetcher {
       if (tk === void 0) break;
 
       this.REGISTERED_TOKEN.add(tk);
+    }
+
+    if (this.REGISTERED_TOKEN.size < 1) {
+      throw new E_NO_AVAIL_TOKEN(WORD_DICT.noAvailableToken);
     }
 
     this.workOffline = process.env.MODE === 'offline';
