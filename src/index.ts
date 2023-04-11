@@ -7,8 +7,7 @@ sourcemapSupport.install();
 
 dotenv.config();
 
-process.env.NODE_ENV =
-  process.argv.indexOf('--dev') !== -1 ? 'development' : 'production';
+process.env.NODE_ENV = process.argv.indexOf('--dev') !== -1 ? 'development' : 'production';
 process.env.MODE = process.argv.indexOf('--offline') !== -1 ? 'offline' : 'live';
 
 const argp = new ArgParser();

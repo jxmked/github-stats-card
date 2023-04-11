@@ -20,7 +20,7 @@ export default abstract class BaseAbstractObject<T extends IBasicProps> {
   protected position: ICoordinate; // From top-left corner
   protected dimension: IDimension;
 
-  public props: Partial<T>;
+  public props: T;
 
   protected abstract readonly svgPath: string;
   protected svgTemplate: ReturnType<typeof Template> | null;

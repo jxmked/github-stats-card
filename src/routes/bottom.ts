@@ -44,12 +44,7 @@ export default class Bottom {
     return false;
   }
 
-  insertTrailing(
-    label: string,
-    count: string,
-    trail: string = '-',
-    charSpace: number = 36
-  ): string {
+  insertTrailing(label: string, count: string, trail: string = '-', charSpace: number = 36): string {
     const labelLen = label.length;
     const countLen = count.length;
 
@@ -93,9 +88,7 @@ export default class Bottom {
       E_GENERATE_NULL: 'Fail'
     });
 
-    const animStyle = Template(
-      'style="animation: Anim <%= interval %>s linear infinite <%= delay %>s"'
-    );
+    const animStyle = Template('style="animation: Anim <%= interval %>s linear infinite <%= delay %>s"');
     const rand = (x: number, y: number) => {
       return {
         interval: Math.ceil(Math.random() * x),
@@ -177,10 +170,7 @@ export default class Bottom {
       graphData = commitPerDays
         .map((num: number, count: number) => {
           const attr = count === 0 ? 'M' : 'L';
-          return `${attr} ${(graph.sx + xDiff * count).toFixed(2)} ${(
-            graph.sy +
-            num * scale
-          ).toFixed(2)}`;
+          return `${attr} ${(graph.sx + xDiff * count).toFixed(2)} ${(graph.sy + num * scale).toFixed(2)}`;
         })
         .join(' ');
     }
@@ -197,16 +187,13 @@ export default class Bottom {
     const tIssues = data.openIssues.totalCount + data.closedIssues.totalCount;
 
     let starsCount = 0;
-    data.repositories.map(
-      (repo: IRepository) => (starsCount += repo.stargazers.totalCount)
-    );
+    data.repositories.map((repo: IRepository) => (starsCount += repo.stargazers.totalCount));
 
     const tStars = starsCount;
     const tPRs = data.pullRequests.totalCount;
     const tCont = data.repositoriesContributedTo.totalCount;
     const tComm =
-      data.contributionsCollection.totalCommitContributions +
-      data.contributionsCollection.restrictedContributionsCount;
+      data.contributionsCollection.totalCommitContributions + data.contributionsCollection.restrictedContributionsCount;
 
     this.generatedStats.totalRepos = data.total;
     this.generatedStats.stargazers = tStars;

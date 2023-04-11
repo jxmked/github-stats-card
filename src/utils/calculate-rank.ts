@@ -66,13 +66,7 @@ export const calculateRank = ({
   const FOLLOWERS_OFFSET = 0.45;
   const REPO_OFFSET = 1;
 
-  const ALL_OFFSETS =
-    CONTRIBS_OFFSET +
-    ISSUES_OFFSET +
-    STARS_OFFSET +
-    PRS_OFFSET +
-    FOLLOWERS_OFFSET +
-    REPO_OFFSET;
+  const ALL_OFFSETS = CONTRIBS_OFFSET + ISSUES_OFFSET + STARS_OFFSET + PRS_OFFSET + FOLLOWERS_OFFSET + REPO_OFFSET;
 
   const RANK_S_VALUE = 1;
   const RANK_DOUBLE_A_VALUE = 25;
@@ -80,8 +74,7 @@ export const calculateRank = ({
   const RANK_A3_VALUE = 60;
   const RANK_B_VALUE = 100;
 
-  const TOTAL_VALUES =
-    RANK_S_VALUE + RANK_DOUBLE_A_VALUE + RANK_A2_VALUE + RANK_A3_VALUE + RANK_B_VALUE;
+  const TOTAL_VALUES = RANK_S_VALUE + RANK_DOUBLE_A_VALUE + RANK_A2_VALUE + RANK_A3_VALUE + RANK_B_VALUE;
 
   const score =
     (totalCommits * COMMITS_OFFSET +
