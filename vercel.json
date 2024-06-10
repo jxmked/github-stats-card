@@ -1,9 +1,15 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "rewrites": [{
-    "source": "/(.*)",
-    "destination": "src/index.ts"
-  }]
+  "builds": [
+    {
+      "src": "src/index.ts",
+      "use": "@now/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "src/index.ts"
+    }
+  ]
 }
