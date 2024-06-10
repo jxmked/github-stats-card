@@ -1,7 +1,6 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
 import { ERROR_CODE } from '../error-constants';
-import moment from 'moment';
 
 dotenv.config();
 
