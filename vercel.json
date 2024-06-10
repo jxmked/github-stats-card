@@ -1,5 +1,7 @@
 {
   "version": 2,
+  "buildCommand": "npm run build",
+  "cleanUrls": false,
   "rewrites": [{
     "source": "/(.*)",
     "destination": "/api"
