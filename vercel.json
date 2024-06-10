@@ -2,6 +2,7 @@
   "version": 2,
   "buildCommand": "npm run build",
   "cleanUrls": false,
+  "outputDirectory": "dist",
   "rewrites": [{
     "source": "/(.*)",
     "destination": "/api"
