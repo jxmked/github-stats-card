@@ -1,6 +1,6 @@
 # github-stats-card
 
-[![Jovan's GitHub stats](https://gh-stats-card.cyclic.app/api/jxmked)](https://github.com/jxmked)
+[![Jovan's GitHub stats](https://gh-stats-card.vercel.app/api/jxmked)](https://github.com/jxmked)
 
 
 __This Github statistic card is inspired by__
@@ -17,7 +17,7 @@ Replace 'Jovan' with your name and
 Replace 'jxmked' with your Github username
 
 ```md
-[![Jovan's GitHub stats](https://gh-stats-card.cyclic.app/api/jxmked)](https://github.com/jxmked)
+[![Jovan's GitHub stats](https://gh-stats-card.vercel.app/api/<your github username>)](https://github.com/jxmked)
 ```
 
 ## Error
@@ -29,4 +29,4 @@ This is the list of error that can trigger a red flag
 - Out of token
 - Errors that did not yet found
 
-[![Jovan's GitHub stats](https://gh-stats-card.cyclic.app/api/novaliduser)](https://github.com/jxmked)
+[![Jovan's GitHub stats](https://gh-stats-card.vercel.app/api/novaliduser)](https://github.com/jxmked)
