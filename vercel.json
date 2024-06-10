@@ -1,19 +1,14 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "src/index.ts",
-      "use": "@now/node"
+  "functions": {
+    "dist/*.js": {
+      "memory": 128,
+      "maxDuration": 10
     }
-  ],
-  "routes": [
+  },
+  "redirects": [
     {
-      "src": "/api/(.*)",
-      "dest": "src/index.ts"
-    },
-    {
-      "src": "/",
-      "dest": "src/index.ts"
+      "source": "/",
+      "destination": "https://github.com/jxmked/github-stats-card.git"
     }
   ]
 }
