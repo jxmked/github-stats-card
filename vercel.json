@@ -1,7 +1,6 @@
 {
   "version": 2,
   "buildCommand": "npm run build",
-  "cleanUrls": false,
   "rewrites": [{
     "source": "/(.*)",
     "destination": "src/index.ts"
