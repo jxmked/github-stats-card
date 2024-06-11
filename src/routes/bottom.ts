@@ -242,10 +242,10 @@ export default class Bottom {
     const staleWhileRevalidateSeconds = 60 * 60 * 24; // 1 day in seconds
 
     res.setHeader('Content-Type', 'image/svg+xml');
-    // res.setHeader(
-    //   'Cache-Control',
-    //   `max-age=${cacheSeconds}, s-maxage=${cacheSeconds}, stale-while-revalidate=${staleWhileRevalidateSeconds}`
-    //);
+    res.setHeader(
+      'Cache-Control',
+      `max-age=${cacheSeconds}, s-maxage=${cacheSeconds}, stale-while-revalidate=${staleWhileRevalidateSeconds}`
+    );
 
     const compiled = this.parsed({
       USERNAME: username,
