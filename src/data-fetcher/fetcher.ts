@@ -21,10 +21,19 @@ export interface IRetryRequestInfo {
 
 export enum BASE_API_URL {
   REST = 'https://api.github.com/users',
-  GRAPHQL = 'https://api.github.com/graphql'
+  GRAPHQL = 'https://api.github.com/graphql',
+  TOTAL_COMMITS = 'https://api.github.com/search/commits'
 }
 
 export default class Fetcher {
+  // Use token if needed. Prevent multiple request for the same query
+  private static __is_fetched_info = false;
+  private static __is_fetched_stats = false;
+  private static __is_fetched_total_commits = false;
+  private static __fetched_info__ = {};
+  private static __fetched_stats__ = {};
+  private static __fetched_total_commits = 0;
+
   private readonly repoFirstCount = 100; /** MAX Possible request **/
   private readonly REGISTERED_TOKEN = new Set<string>();
   private dateRange: number;
@@ -159,6 +168,8 @@ export default class Fetcher {
   }
 
   public async doFetchStats(): Promise<IGraphQLResponse> {
+    if (Fetcher.__is_fetched_stats) return Fetcher.__fetched_stats__ as IGraphQLResponse;
+
     let lastCursor: null | string = null;
     let hasNext: boolean = false;
     let repoCount: number = 0;
@@ -224,13 +235,19 @@ export default class Fetcher {
       hasBeenSet = true;
     } while (hasNext);
 
-    return Object.assign(records, {
+    const finalRes = Object.assign(records, {
       repositories: repos,
       total: repoCount
     }) as IGraphQLResponse;
+
+    Fetcher.__is_fetched_stats = true;
+    return Object.assign(Fetcher.__fetched_stats__, finalRes);
   }
 
   public async doFetchInfo(): Promise<IGithubRestApiUserInfo> {
+    if (Fetcher.__is_fetched_info)
+      return Fetcher.__fetched_info__ as IGithubRestApiUserInfo;
+
     const request = {
       url: `${BASE_API_URL.REST}/${this.props.username}`,
       method: 'GET'
@@ -253,7 +270,40 @@ export default class Fetcher {
         continue;
       }
 
-      return data as IGithubRestApiUserInfo;
+      Fetcher.__is_fetched_info = true;
+      return Object.assign(Fetcher.__fetched_info__, data) as IGithubRestApiUserInfo;
+    } while (true);
+  }
+
+  public async getTotalCommits(): Promise<number> {
+    if (Fetcher.__is_fetched_total_commits) return Fetcher.__fetched_total_commits;
+
+    const query = {
+      method: 'GET',
+      url: `${BASE_API_URL.TOTAL_COMMITS}?q=author:${this.props.username}`
+    } satisfies IRetryRequestInfo;
+
+    const retries = this.retry(query);
+
+    do {
+      const tried = await retries.next();
+
+      if (tried.done) {
+        throw new Error(`${ERROR_CODE.OUT_OF_TOKEN}`);
+      }
+
+      const response = tried.value;
+      const data = response?.data;
+
+      if (response?.status !== 200 || typeof data === void 0) {
+        // Considered Bad Token, Consumed or something I don't like
+        continue;
+      }
+
+      Fetcher.__is_fetched_total_commits = true;
+      Fetcher.__fetched_total_commits = data.total_count;
+
+      return Fetcher.__fetched_total_commits;
     } while (true);
   }
 }

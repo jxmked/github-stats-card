@@ -13,7 +13,6 @@ const port = process.env.port ?? 9000;
 const bottom = new partial.bottom();
 
 const main = (req: Request, res: Response) => {
-  console.log(req);
   res.send('Visit <a href="https://github.com/jxmked">Jovan\'s Github Account</a>');
 };
 

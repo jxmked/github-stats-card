@@ -28,6 +28,8 @@ export default class Bottom {
 
   async validateAccount(fetcher: Fetcher): Promise<boolean> {
     try {
+      fetcher.getTotalCommits();
+
       const data = await fetcher.doFetchInfo();
 
       this.userid = data.id;
@@ -185,7 +187,7 @@ export default class Bottom {
     } as { graph: string; maxCommit: number; midCommit: number; recordLength: number };
   }
 
-  generateStats(data: IGraphQLResponse) {
+  generateStats(data: IGraphQLResponse, tComm: number) {
     const tIssues = data.openIssues.totalCount + data.closedIssues.totalCount;
 
     let starsCount = 0;
@@ -196,9 +198,9 @@ export default class Bottom {
     const tStars = starsCount;
     const tPRs = data.pullRequests.totalCount;
     const tCont = data.repositoriesContributedTo.totalCount;
-    const tComm =
+    /** const tComm =
       data.contributionsCollection.totalCommitContributions +
-      data.contributionsCollection.restrictedContributionsCount;
+      data.contributionsCollection.restrictedContributionsCount; **/
 
     this.generatedStats.totalRepos = data.total;
     this.generatedStats.stargazers = tStars;
@@ -231,18 +233,19 @@ export default class Bottom {
     }
 
     const data = await fObject.doFetchStats();
+    const tCommits = await fObject.getTotalCommits();
 
-    const statsData = this.generateStats(data);
+    const statsData = this.generateStats(data, tCommits);
     const graphData = this.generateGraph(data);
 
     const cacheSeconds = 60 * 60 * 12; // 12 hours in seconds
     const staleWhileRevalidateSeconds = 60 * 60 * 24; // 1 day in seconds
 
     res.setHeader('Content-Type', 'image/svg+xml');
-    res.setHeader(
-      'Cache-Control',
-      `max-age=${cacheSeconds}, s-maxage=${cacheSeconds}, stale-while-revalidate=${staleWhileRevalidateSeconds}`
-    );
+    // res.setHeader(
+    //   'Cache-Control',
+    //   `max-age=${cacheSeconds}, s-maxage=${cacheSeconds}, stale-while-revalidate=${staleWhileRevalidateSeconds}`
+    //);
 
     const compiled = this.parsed({
       USERNAME: username,
