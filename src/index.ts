@@ -1,7 +1,9 @@
 import dotenv from 'dotenv';
-import Fetcher from './data-fetcher/fetcher';
 import express, { Request, Response } from 'express';
 import { partial } from './routes';
+import __sourceMapSupport__ from 'source-map-support';
+
+__sourceMapSupport__.install();
 
 dotenv.config();
 
