@@ -4,7 +4,7 @@
   "description": "Create awesome Github stat card",
   "main": "src/index.ts",
   "engines": {
-    "node": "18.*"
+    "node": "20.*"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
