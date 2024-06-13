@@ -29,4 +29,4 @@ This is the list of error that can trigger a red flag
 - Out of token
 - Errors that did not yet found
 
-[![Jovan's GitHub stats](https://gh-stats-card.vercel.app/api/novaliduser)](https://github.com/jxmked)
+[![Jovan's GitHub stats](https://gh-stats-card.vercel.app/api/_novaliduser)](https://github.com/jxmked)
