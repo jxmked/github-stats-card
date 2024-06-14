@@ -240,14 +240,14 @@ export default class Fetcher {
       total: repoCount
     }) as IGraphQLResponse;
 
-    Fetcher.__is_fetched_stats = true;
+    //Fetcher.__is_fetched_stats = true;
     return Object.assign(Fetcher.__fetched_stats__, finalRes);
   }
 
   public async doFetchInfo(): Promise<IGithubRestApiUserInfo> {
     if (Fetcher.__is_fetched_info)
       return Fetcher.__fetched_info__ as IGithubRestApiUserInfo;
-
+    
     const request = {
       url: `${BASE_API_URL.REST}/${this.props.username}`,
       method: 'GET'
@@ -270,7 +270,7 @@ export default class Fetcher {
         continue;
       }
 
-      Fetcher.__is_fetched_info = true;
+      //Fetcher.__is_fetched_info = true;
       return Object.assign(Fetcher.__fetched_info__, data) as IGithubRestApiUserInfo;
     } while (true);
   }
@@ -300,7 +300,7 @@ export default class Fetcher {
         continue;
       }
 
-      Fetcher.__is_fetched_total_commits = true;
+      //Fetcher.__is_fetched_total_commits = true;
       Fetcher.__fetched_total_commits = data.total_count;
 
       return Fetcher.__fetched_total_commits;
