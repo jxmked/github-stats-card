@@ -247,7 +247,7 @@ export default class Fetcher {
   public async doFetchInfo(): Promise<IGithubRestApiUserInfo> {
     if (Fetcher.__is_fetched_info)
       return Fetcher.__fetched_info__ as IGithubRestApiUserInfo;
-    
+
     const request = {
       url: `${BASE_API_URL.REST}/${this.props.username}`,
       method: 'GET'

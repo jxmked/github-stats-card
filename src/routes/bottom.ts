@@ -28,7 +28,7 @@ export default class Bottom {
 
   async validateAccount(fetcher: Fetcher): Promise<boolean> {
     try {
-      fetcher.getTotalCommits();
+      await fetcher.getTotalCommits();
 
       const data = await fetcher.doFetchInfo();
 
@@ -38,7 +38,7 @@ export default class Bottom {
        * We can also block or restrict other user if needed
        * */
       return data.type === 'User';
-    } catch (err) {}
+    } catch (_) {}
 
     return false;
   }
