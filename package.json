@@ -12,6 +12,9 @@
     "prettier-format": "prettier --config .prettierrc \"./src\" \"./types\" --write",
     "serve": "nodemon \"./dist/\" localhost 9000"
   },
+   "resolutions": {
+    "resolve": "1.20.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jxmked/github-stats-card.git"
