@@ -224,6 +224,11 @@ export default class Bottom {
   async handle(req: Request, res: Response): Promise<void> {
     const { username } = req.params;
 
+    if(typeof username !== 'string' || username.length === 0) {
+      this.errorCard(req, res);
+      return;
+    }
+    
     const fObject = new Fetcher({ username });
     const isValidAccount = await this.validateAccount(fObject);
 
